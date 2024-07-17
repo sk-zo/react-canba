@@ -18,12 +18,85 @@
     position: relative;
     border: 1px solid #c2c2c2;
     border-bottom: 1px solid #fff;
-    align-content: center;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
     cursor: pointer;
 }
 
 .session-box-li.selected {
-    border: 1px solid #13da44;
     background-color: #13da44;
     color: white;  
+}
+
+.session-menu-icon {
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+.session-menu {
+    position: absolute;
+    top: 0;
+    right: -125px;
+    width: 125px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.session-menu-item {
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    color: black;
+}
+
+.session-menu-item:hover {
+    background-color: #f0f0f0;
+}
+
+
+.session-popup {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(53, 53, 53, 0.2);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 500;
+    color: black;
+}
+
+.session-popup-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background: #fff;
+    min-width: 320px;
+    max-width: 500px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #e1e1e1;
+    max-height: 90vh;
+}
+
+.session-popup-body {
+    margin: 20px 0;
+    padding: 0 20px;
+}
+
+.session-popup-body input {
+    width: 100%;
+}
+
+.session-popup-tail {
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-evenly;
 }
