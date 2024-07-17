@@ -3,4 +3,27 @@
     background-color: #f4f4f4;
     padding: 10px;
 }
-  
+
+.session-box-ul {
+    list-style: none;
+    width: 180px;
+    padding: 0;
+}
+
+.session-box-li {
+    background: #fff;
+    padding: 0 10px;
+    width: 100%;
+    height: 50px;
+    position: relative;
+    border: 1px solid #c2c2c2;
+    border-bottom: 1px solid #fff;
+    align-content: center;
+    cursor: pointer;
+}
+
+.session-box-li.selected {
+    border: 1px solid #13da44;
+    background-color: #13da44;
+    color: white;  
+}
