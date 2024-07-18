@@ -15,7 +15,9 @@ function DraggableSession({
   copySession,
   deleteSession,
   selectedSession, 
-  handleSetSelectedSession 
+  handleSetSelectedSession,
+  isSessionMenuOpen,
+  setSessionMenuOpen
 }) {
   const ref = React.useRef(null);
   const [, drop] = useDrop({
@@ -44,7 +46,6 @@ function DraggableSession({
 
   drag(drop(ref));
 
-  const [isSessionMenuOpen, setIsSessionMenuOpen] = useState(false);
   const [isRenameSessionMenuOpen, setIsRenameSessionMenuOpen] = useState(false);
   const [renameSessionName, setRenameSessionName] = useState('');
   const [isCopySessionMenuOpen, setIsCopySessionMenuOpen] = useState(false);
@@ -52,12 +53,12 @@ function DraggableSession({
 
   // session toggle menu
   const handleToggleSessionMenu = () => {
-    setIsSessionMenuOpen(!isSessionMenuOpen);
-  }
+    setSessionMenuOpen(isSessionMenuOpen ? null : session.id);
+  };
 
   const handleCloseSessionMenu = () => {
-    setIsSessionMenuOpen(false);
-  }
+    setSessionMenuOpen(null);
+  };
 
 
   // session rename
@@ -69,7 +70,7 @@ function DraggableSession({
     if (renameSessionName.trim()) {
       renameSession(session.id, renameSessionName);
       setIsRenameSessionMenuOpen(false);
-      setIsSessionMenuOpen(false);
+      setSessionMenuOpen(null);
     }
   };
 
@@ -86,7 +87,7 @@ function DraggableSession({
   const handleCopySessionConfirm = () => {
     copySession(session.id);
     setIsCopySessionMenuOpen(false);
-    setIsSessionMenuOpen(false);
+    setSessionMenuOpen(null);
   };
 
   const handleCopySessionCancel = () => {
@@ -102,7 +103,7 @@ function DraggableSession({
   const handleDeleteSessionConfirm = (e) => {
     deleteSession(session.id);
     setIsDeleteSessionMenuOpen(false);
-    setIsSessionMenuOpen(false);
+    setSessionMenuOpen(null);
   };
 
   const handleDeleteSessionCancel = () => {
@@ -195,6 +196,7 @@ function Sidebar({
 }) {
   const [isSessionPopupOpen, setIsSessionPopupOpen] = useState(false);
   const [addSessionName, setAddSessionName] = useState('');
+  const [sessionMenuOpen, setSessionmenuOpen] = useState(null);
 
   const handleAddSession = () => {
     setIsSessionPopupOpen(true);
@@ -229,6 +231,8 @@ function Sidebar({
                 deleteSession={deleteSession}
                 selectedSession={selectedSession}
                 handleSetSelectedSession={handleSetSelectedSession}
+                isSessionMenuOpen={sessionMenuOpen === session.id}
+                setSessionMenuOpen={setSessionmenuOpen}
               />
             ))}
           </ul>

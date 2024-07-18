@@ -43,9 +43,12 @@
 .page-box-li {
   background-color: #fff;
   border: 1px solid #c2c2c2;
+  min-width: 80px;
   height: 100%;
   padding: 0 15px;
-  align-content: center;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
   cursor: pointer;
 }  
 
@@ -54,9 +57,37 @@
   color: white;  
 }
 
+.page-menu-icon {
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.page-menu {
+  position: absolute;
+  top: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.page-menu-item {
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: black;
+}
+
+.page-menu-item:hover {
+  background-color: #f0f0f0;
+}
+
 .add-page-button {
   cursor: pointer;
 }
+
+
 
 .page-popup {
   width: 100%;
@@ -67,6 +98,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 500;
+  color: black;
 }
 
 .page-popup-content {

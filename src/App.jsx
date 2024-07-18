@@ -109,8 +109,62 @@ function App() {
     setSelectedPage(newPage.id);
   }
 
-  
+  const renamePage = (sessionId, pageId, pageName) => {
+    const updatedSessions = sessions.map(session =>
+      session.id === sessionId
+      ? {
+        ...session,
+        pages: session.pages.map(page =>
+          page.id === pageId ? { ...page, name: pageName } : page
+        ),
+      }
+      : session
+    );
+    setSessions(updatedSessions);
+  };
 
+  const copyPage = (sessionId, pageId) => {
+    const sessionToUpdate = sessions.find(session => session.id === sessionId);
+    if (!sessionToUpdate) return ;
+
+    const pageToCopy = sessionToUpdate.pages.find(page => page.id === pageId);
+
+    const copiedPage = {
+      ...pageToCopy,
+      id: Date.now() + Math.random(),
+      name: `${pageToCopy.name} (Copy)`,
+      order: sessionToUpdate.pages.length,
+      components: pageToCopy.components.map(component => ({
+        ...component,
+        id: Date.now() + Math.random(),
+      })),
+    };
+
+    const updatedSessions = sessions.map(session =>
+      session.id === sessionId
+      ? { ...session, pages: [...session.pages, copiedPage]}
+      :session
+    );
+
+    setSessions(updatedSessions);
+  }
+
+  const deletePage = (sessionId, pageId) => {
+    const updatedSessions = sessions.map(session =>
+      session.id === sessionId
+      ? {
+        ...session,
+        pages: session.pages.filter(page => page.id !== pageId)
+        .map((page, index) => ({ ...page, order: index })),
+      }
+      : session
+    );
+    setSessions(updatedSessions);
+    if (selectedPage === pageId) {
+      setSelectedPage(null);
+    }
+  };
+  
   const movePage = (fromIndex, toIndex) => {
     const updatedSessions = sessions.map((session) => {
       if (session.id === selectedSession) {
@@ -206,6 +260,9 @@ function App() {
           sessions={sessions}
           selectedSession={selectedSession}
           addPage={addPage}
+          renamePage={renamePage}
+          copyPage={copyPage}
+          deletePage={deletePage}
           setSelectedPage={setSelectedPage}
           selectedPage={selectedPage}
           movePage={movePage}

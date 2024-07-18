@@ -8,7 +8,19 @@ const ItemType = {
   PAGE: 'page',
 };
 
-function DraggablePage({ page, index, movePage, selectedPage, setSelectedPage}) {
+function DraggablePage({ 
+  page, 
+  index, 
+  session,
+  movePage, 
+  renamePage,
+  copyPage,
+  deletePage,
+  selectedPage, 
+  setSelectedPage,
+  isPageMenuOpen,
+  setPageMenuOpen
+}) {
   const ref = React.useRef(null);
   const [, drop] = useDrop({
     accept: ItemType.PAGE,
@@ -36,6 +48,71 @@ function DraggablePage({ page, index, movePage, selectedPage, setSelectedPage}) 
 
   drag(drop(ref));
 
+  const [isRenamePageMenuOpen, setIsRenamePageMenuOpen] = useState(false);
+  const [renamePageName, setRenamePageName] = useState('');
+  const [isCopyPageMenuOpen, setIsCopyPageMenuOpen] = useState(false);
+  const [isDeletePageMenuOpen, setIsDeletePageMenuOpen] = useState(false);
+  
+
+  // page toggle menu
+  const handleTogglePageMenu = () => {
+    setPageMenuOpen(isPageMenuOpen ? null : page.id);
+  };
+
+  const handleClosePageMenu = () => {
+    setPageMenuOpen(null);
+  };
+
+
+  // page rename
+  const handleRenamePageMenu = () => {
+    setIsRenamePageMenuOpen(true);
+  };
+
+  const handleRenamePageConfirm = () => {
+    if (renamePageName.trim()) {
+      renamePage(session.id, page.id, renamePageName.trim());
+      setIsRenamePageMenuOpen(false);
+      setPageMenuOpen(null);
+    }
+  }
+
+  const handleRenamePageCancel = () => {
+    setIsRenamePageMenuOpen(false);
+  }
+
+  
+  // page copy
+  const handleCopyPageMenu = () => {
+    setIsCopyPageMenuOpen(true);
+  }
+
+  const handleCopyPageConfirm = () => {
+    copyPage(session.id, page.id);
+    setIsCopyPageMenuOpen(false);
+    setPageMenuOpen(null);
+  }
+
+  const handleCopyPageCancel = () => {
+    setIsCopyPageMenuOpen(false);
+  }
+
+
+  // page delete
+  const handleDeletePageMenu = () => {
+    setIsDeletePageMenuOpen(true);
+  }
+
+  const handleDeletePageConfirm = () => {
+    deletePage(session.id, page.id);
+    setIsDeletePageMenuOpen(false);
+    setPageMenuOpen(null);
+  }
+
+  const handleDeletePageCancel = () => {
+    setIsDeletePageMenuOpen(false);
+  }
+
   return (
     <li
       ref={ref}
@@ -44,6 +121,64 @@ function DraggablePage({ page, index, movePage, selectedPage, setSelectedPage}) 
       style={{ opacity: isDragging ? 0.5 : 1 }}
     >
       {page.name}
+      <i className='page-menu-icon' onClick={handleTogglePageMenu}>...</i>
+      {isPageMenuOpen && (
+        <div className='page-menu'>
+          <div className='page-menu-item' onClick={handleRenamePageMenu}>
+            페이지 이름 변경
+          </div>
+          <div className='page-menu-item' onClick={handleCopyPageMenu}>
+            페이지 복사
+          </div>
+          <div className='page-menu-item' onClick={handleDeletePageMenu}>
+            페이지 삭제
+          </div>
+          <div className='page-menu-item' onClick={handleClosePageMenu}>
+            닫기
+          </div>
+        </div>
+      )}
+      {isRenamePageMenuOpen && (
+        <div className='page-popup'>
+          <div className='page-popup-content'>
+            <h3>페이지 이름을 변경하시겠습니까?</h3>
+            <div className='page-popup-body'>
+                <input 
+                  type="text" 
+                  value={renamePageName}
+                  onChange={(e) => setRenamePageName(e.target.value)}
+                  placeholder={page.name}
+                />
+              </div>
+            <div className='page-popup-tail'>
+              <button onClick={handleRenamePageConfirm}>확인</button>
+              <button onClick={handleRenamePageCancel}>취소</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {isCopyPageMenuOpen && (
+        <div className='page-popup'>
+          <div className='page-popup-content'>
+            <h3>페이지를 복사하시겠습니까?</h3>
+            <div className='page-popup-tail'>
+              <button onClick={handleCopyPageConfirm}>확인</button>
+              <button onClick={handleCopyPageCancel}>취소</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {isDeletePageMenuOpen && (
+        <div className='page-popup'>
+          <div className='page-popup-content'>
+            <h3>페이지를 삭제하시겠습니까?</h3>
+            <div className='page-popup-tail'>
+              <button onClick={handleDeletePageConfirm}>확인</button>
+              <button onClick={handleDeletePageCancel}>취소</button>
+            </div>
+          </div>
+        </div>
+      )}
     </li>
   );
 }
@@ -51,15 +186,19 @@ function DraggablePage({ page, index, movePage, selectedPage, setSelectedPage}) 
 function ContentMain({ 
   sessions, 
   selectedSession, 
-  addPage, 
+  addPage,
+  renamePage,
+  copyPage,
+  deletePage, 
   setSelectedPage, 
   selectedPage,
   updateComponent, 
   setSelectedComponent,
   movePage
  }) {
-  const [isPagePoupOpen, setIsPagePopupOpen] = useState(false);
+  const [isPagePopupOpen, setIsPagePopupOpen] = useState(false);
   const [pageName, setPageName] = useState('');
+  const [pageMenuOpen, setPageMenuOpen] = useState(null);
   const contentPageRef = useRef(null);
   const session = sessions.find((session) => session.id === selectedSession);
   const pages = session ? session.pages : [];
@@ -95,9 +234,15 @@ function ContentMain({
                       key={page.id}
                       page={page}
                       index={index}
+                      session={session}
                       movePage={movePage}
+                      renamePage={renamePage}
+                      copyPage={copyPage}
+                      deletePage={deletePage}
                       selectedPage={selectedPage}
                       setSelectedPage={setSelectedPage}
+                      isPageMenuOpen={pageMenuOpen === page.id}
+                      setPageMenuOpen={setPageMenuOpen}
                     />
                   )) 
               ) : 
@@ -116,7 +261,7 @@ function ContentMain({
       </DndProvider>
       )}
 
-      {selectedPage != null && (
+      {selectedPage != null && pages.find(page => page.id === selectedPage) && (
         <div className="content-page" ref={contentPageRef}>
           {pages.find(page => page.id === selectedPage).components.map((component) => (
             component !== null && (
@@ -134,7 +279,7 @@ function ContentMain({
         </div>
       )}
       
-      {isPagePoupOpen && (
+      {isPagePopupOpen && (
       <div className='page-popup'>
         <div className='page-popup-content'>
           <div className='page-popup-head'>
