@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import './PageEditMenu.css'
 
 function PageEditMenu({
-    addTextComponent
+    addTextComponent,
+    addImageComponent,
+    changePageBackgroundImage
 }) {
     const [isBackgroundUploadPopupOpen, setBackgroundUploadPoupOpen] = useState(false);
 
@@ -11,15 +13,17 @@ function PageEditMenu({
     };
 
     const handleBackgroundChange = (e) => {
-        const file = e.targete.files[0];
+        const file = e.target.files && e.target.files[0];
         if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            changePageBackgroundImage(imageUrl);
             setBackgroundUploadPoupOpen(false);
         }
-    }
+    };
 
     const handleBackgroundUploadPopupCancel = () => {
         setBackgroundUploadPoupOpen(false);
-    }
+    };
 
 
     return (
@@ -37,9 +41,17 @@ function PageEditMenu({
             <div className='page-edit-body'>
                 <ul className='page-edit-body-ul'>
                     <li 
-                    className='page-edit-body-li'
-                    onClick={addTextComponent}
-                    ><div><p>텍스트</p></div></li>
+                        className='page-edit-body-li'
+                        onClick={addTextComponent}
+                    >
+                    <div><p>텍스트</p></div>
+                    </li>
+                    <li 
+                        className='page-edit-body-li'
+                        onClick={addImageComponent}
+                    >
+                    <div><p>이미지</p></div>
+                    </li>
                 </ul>
             </div>
             {isBackgroundUploadPopupOpen && (
@@ -62,14 +74,11 @@ function PageEditMenu({
                         />
                     </div>
                     <div className='page-edit-popup-tail'>
-                        
                     </div>
                 </div>
             </div>
             )}
         </div>
-
-        
     );
 }
 
