@@ -8,22 +8,17 @@ import TextComponent from './TextComponent';
 import './ContentMain.css';
 
 
-
 function ContentMain({ 
   sessions, 
   selectedSession, 
-  addPage,
-  renamePage,
-  copyPage,
-  deletePage, 
-  setSelectedPage, 
   selectedPage,
   selectedComponent,
+  setSessions,
+  setSelectedPage, 
   addTextComponent,
   updateComponent,
   deleteComponent, 
   setSelectedComponent,
-  movePage
  }) {
   const [isPagePopupOpen, setIsPagePopupOpen] = useState(false);
   const [pageName, setPageName] = useState('');
@@ -50,6 +45,25 @@ function ContentMain({
   useEffect(() => {
     console.log("ContentMain selectedPage:", selectedPage);
   }, [selectedPage]);
+
+  const addPage = (pageName) => {
+    const session = sessions.find((session) => session.id === selectedSession);
+    console.log(session);
+    const newPage = {
+      id: Date.now(),
+      name: pageName,
+      order: session.pages.length,
+      components: [],
+      backgroundImage: ''
+    };
+    const updatedSessions = sessions.map((session) =>
+      session.id === selectedSession
+        ? { ...session, pages: [...session.pages, newPage]}
+        : session
+    );
+    setSessions(updatedSessions);
+    setSelectedPage(newPage.id);
+  }
 
   const handleAddPage = () => {
     setIsPagePopupOpen(true);
@@ -79,15 +93,15 @@ function ContentMain({
                   pages.map((page, index) => (
                     <DraggablePage
                       key={page.id}
+                      sessions={sessions}
+                      session={session}
                       page={page}
                       index={index}
-                      session={session}
-                      movePage={movePage}
-                      renamePage={renamePage}
-                      copyPage={copyPage}
-                      deletePage={deletePage}
+                      setSessions={setSessions}
+                      selectedSession={selectedSession}
                       selectedPage={selectedPage}
                       setSelectedPage={setSelectedPage}
+                      setSelectedComponent={setSelectedComponent}
                       isPageMenuOpen={pageMenuOpen === page.id}
                       setPageMenuOpen={setPageMenuOpen}
                     />

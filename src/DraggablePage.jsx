@@ -6,15 +6,15 @@ const ItemType = {
   };
   
 function DraggablePage({ 
+    sessions,
+    session,
     page, 
     index, 
-    session,
-    movePage, 
-    renamePage,
-    copyPage,
-    deletePage,
+    setSessions,
+    selectedSession,
     selectedPage, 
     setSelectedPage,
+    setSelectedComponent,
     isPageMenuOpen,
     setPageMenuOpen
   }) {
@@ -52,7 +52,93 @@ function DraggablePage({
     const [isCopyPageMenuOpen, setIsCopyPageMenuOpen] = useState(false);
     const [isDeletePageMenuOpen, setIsDeletePageMenuOpen] = useState(false);
     
-  
+    const renamePage = (sessionId, pageId, pageName) => {
+        const updatedSessions = sessions.map(session =>
+          session.id === sessionId
+          ? {
+            ...session,
+            pages: session.pages.map(page =>
+              page.id === pageId ? { ...page, name: pageName } : page
+            ),
+          }
+          : session
+        );
+        setSessions(updatedSessions);
+      };
+    
+      const copyPage = (sessionId, pageId) => {
+        const sessionToUpdate = sessions.find(session => session.id === sessionId);
+        if (!sessionToUpdate) return ;
+    
+        const pageToCopy = sessionToUpdate.pages.find(page => page.id === pageId);
+    
+        const copiedPage = {
+          ...pageToCopy,
+          id: Date.now() + Math.random(),
+          name: `${pageToCopy.name} (Copy)`,
+          order: sessionToUpdate.pages.length,
+          components: pageToCopy.components.map(component => ({
+            ...component,
+            id: Date.now() + Math.random(),
+          })),
+        };
+    
+        const updatedSessions = sessions.map(session =>
+          session.id === sessionId
+          ? { ...session, pages: [...session.pages, copiedPage]}
+          :session
+        );
+    
+        setSessions(updatedSessions);
+      }
+    
+      const deletePage = (sessionId, pageId) => {
+        const updatedSessions = sessions.map(session =>
+          session.id === sessionId
+          ? {
+            ...session,
+            pages: session.pages.filter(page => page.id !== pageId)
+            .map((page, index) => ({ ...page, order: index })),
+          }
+          : session
+        );
+        setSessions(updatedSessions);
+        console.log("deletePage selectedPage:", selectedPage);
+        console.log("deletePage pageId:", pageId);
+        setSelectedPage(pageId => {
+          if (selectedPage === pageId) {
+            return null;
+          }
+          return selectedPage;
+          });
+          setSelectedComponent(null);
+        
+        console.log("after deletePage selectedPage:", selectedPage);
+      };
+      
+      const movePage = (fromIndex, toIndex) => {
+        const updatedSessions = sessions.map((session) => {
+          if (session.id === selectedSession) {
+            const updatedPages = [...session.pages];
+            const movedPage = updatedPages.splice(fromIndex, 1)[0];
+            updatedPages.splice(toIndex, 0, movedPage);
+    
+            updatedPages.forEach((page, index) => {
+              page.order = index;
+            });
+    
+            return {
+              ...session,
+              pages: updatedPages,
+            };
+          }
+          return session;
+        });
+    
+        setSessions(updatedSessions);
+      };
+
+
     // page toggle menu
     const handleTogglePageMenu = () => {
       setPageMenuOpen(isPageMenuOpen ? null : page.id);
