@@ -11,6 +11,10 @@
   background-color: #fff;
 }
 
+.content-main {
+  display: flex;
+}
+
 .content-page {
     position: relative;
     background-color: #fff;

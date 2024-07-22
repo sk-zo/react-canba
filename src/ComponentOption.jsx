@@ -1,7 +1,11 @@
 import React from 'react';
 import './ComponentOption.css';
 
-function ComponentOption({ component, updateComponent }) {
+function ComponentOption({ 
+  component, 
+  updateComponent,
+  deleteComponent
+}) {
   const handleFontSizeChange = (e) => {
     updateComponent(component.id, {
       style: {
@@ -20,8 +24,12 @@ function ComponentOption({ component, updateComponent }) {
     });
   };
 
+  const handleDeleteComponent = (e) => {
+    deleteComponent(component.id);
+  }
+
   return (
-    <div className="component-options">
+    <div className="component-option">
       <h3>Component Options</h3>
       <label>
         Font Size:
@@ -35,6 +43,9 @@ function ComponentOption({ component, updateComponent }) {
         Color:
         <input type="color" value={component.style.color} onChange={handleColorChange} />
       </label>
+      <div>
+        <button onClick={handleDeleteComponent}>Delete</button>
+      </div>
     </div>
   );
 }

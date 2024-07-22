@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDrag, useDrop, DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import './Sidebar.css';
@@ -184,7 +184,6 @@ function DraggableSession({
 
 
 function Sidebar({ 
-  addTextComponent, 
   sessions, 
   selectedSession, 
   addSession,
@@ -196,7 +195,20 @@ function Sidebar({
 }) {
   const [isSessionPopupOpen, setIsSessionPopupOpen] = useState(false);
   const [addSessionName, setAddSessionName] = useState('');
-  const [sessionMenuOpen, setSessionmenuOpen] = useState(null);
+  const [sessionMenuOpen, setSessionMenuOpen] = useState(null);
+
+  useEffect(() => {
+    const handleClickNoneSessionMenu = (event) => {
+      if (!event.target.closest('.session-menu')) {
+        setSessionMenuOpen(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickNoneSessionMenu);
+    return () => {
+      document.removeEventListener('mousedown', handleClickNoneSessionMenu);
+    }
+  })
 
   const handleAddSession = () => {
     setIsSessionPopupOpen(true);
@@ -232,7 +244,7 @@ function Sidebar({
                 selectedSession={selectedSession}
                 handleSetSelectedSession={handleSetSelectedSession}
                 isSessionMenuOpen={sessionMenuOpen === session.id}
-                setSessionMenuOpen={setSessionmenuOpen}
+                setSessionMenuOpen={setSessionMenuOpen}
               />
             ))}
           </ul>
@@ -259,7 +271,6 @@ function Sidebar({
             </div>
           </div>
         )}
-        <button onClick={addTextComponent}>Add Text</button>
       </div>
     </DndProvider>
   );

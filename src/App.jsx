@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import ContentMain from './ContentMain';
-import ComponentOption from './ComponentOption';
 import './App.css';
 
 function App() {
@@ -11,6 +10,23 @@ function App() {
   const [selectedPage, setSelectedPage] = useState(null);
   const [selectedComponent, setSelectedComponent] = useState(null);
   
+
+  useEffect(() => {
+    const handleClickNoneContent = (event) => {
+      if (!event.target.closest('.text-component') && !event.target.closest('.component-option')) {
+        setSelectedComponent(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickNoneContent);
+    return () => {
+      document.removeEventListener('mousedown', handleClickNoneContent);
+    }
+  })
+
+  useEffect(() => {
+    console.log('selectedPage updated:', selectedPage);
+  }, [selectedPage]);
 
   const addSesssion = (sessionName) => {
     const newSession = {
@@ -64,8 +80,17 @@ function App() {
         ...session,
         order: index,
       }));
-    console.log('Updated Sessions:', updatedSessions);
+    
+
     setSessions(updatedSessions);
+
+    if (selectedSession === sessionId) {
+      setSelectedSession(null);
+      setSelectedPage(null);
+      setSelectedComponent(null);
+      console.log(selectedPage);
+    }
+
   }
 
   const handleSetSelectedSession = (sessionId) => {
@@ -76,6 +101,7 @@ function App() {
     } else {
       setSelectedPage(null);
     }
+    setSelectedComponent(null);
   };
 
   const moveSession = (fromIndex, toIndex) => {
@@ -98,7 +124,8 @@ function App() {
       id: Date.now(),
       name: pageName,
       order: session.pages.length,
-      components: []
+      components: [],
+      backgroundImage: ''
     };
     const updatedSessions = sessions.map((session) =>
       session.id === selectedSession
@@ -160,9 +187,17 @@ function App() {
       : session
     );
     setSessions(updatedSessions);
-    if (selectedPage === pageId) {
-      setSelectedPage(null);
-    }
+    console.log("deletePage selectedPage:", selectedPage);
+    console.log("deletePage pageId:", pageId);
+    setSelectedPage(pageId => {
+      if (selectedPage === pageId) {
+        return null;
+      }
+      return selectedPage;
+      });
+      setSelectedComponent(null);
+    
+    console.log("after deletePage selectedPage:", selectedPage);
   };
   
   const movePage = (fromIndex, toIndex) => {
@@ -214,6 +249,7 @@ function App() {
       } return session;
     });
     setSessions(updatedSessions);
+    setSelectedComponent(newComponent);
   };
 
   const updateComponent = (componentId, newProperties) => {
@@ -238,7 +274,27 @@ function App() {
     setSessions(updatedSessions);
   };
 
-  
+  const deleteComponent = (componentId) => {
+    const updatedSessions = sessions.map((session) => {
+      if (session.id === selectedSession) {
+        return {
+          ...session,
+          pages: session.pages.map((page) => {
+            if (page.id === selectedPage) {
+              return {
+                ...page,
+                components: page.components.filter((component) => component.id !== componentId)
+              };
+            }
+            return page;
+          }) 
+        }
+      }
+      return session;
+    });
+    setSessions(updatedSessions);
+    setSelectedComponent(null);
+  }
 
   
   return (
@@ -253,7 +309,6 @@ function App() {
           deleteSession={deleteSession}
           selectedSession={selectedSession}
           handleSetSelectedSession={handleSetSelectedSession}
-          addTextComponent={addTextComponent}
           moveSession={moveSession}
         />
         <ContentMain
@@ -266,15 +321,12 @@ function App() {
           setSelectedPage={setSelectedPage}
           selectedPage={selectedPage}
           movePage={movePage}
+          addTextComponent={addTextComponent}
+          selectedComponent={selectedComponent}
           updateComponent={updateComponent}
+          deleteComponent={deleteComponent}
           setSelectedComponent={setSelectedComponent}
         />
-        {selectedComponent && (
-          <ComponentOption
-            component={selectedComponent}
-            updateComponent={updateComponent}
-          />
-        )}
       </div>
     </div>
   );
