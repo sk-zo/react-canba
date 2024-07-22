@@ -28,95 +28,7 @@ function App() {
     console.log('selectedPage updated:', selectedPage);
   }, [selectedPage]);
 
-  const addSesssion = (sessionName) => {
-    const newSession = {
-      id: Date.now(),
-      name: sessionName,
-      order: sessions.length,
-      pages: []
-    };
-    setSessions([...sessions, newSession]);
-    setSelectedSession(newSession.id);
-    setSelectedPage(null);
-  };
-
   
-  const renameSession = (sessionId, sessionName) => {
-    const updatedSessions = sessions.map(session =>
-      session.id === sessionId
-      ? { ...session, name: sessionName}
-      : session
-    );
-    setSessions(updatedSessions);
-  }
-
-  const copySession = (sessionId) => {
-    const sessionToCopy = sessions.find(session => session.id === sessionId);
-    if (!sessionToCopy) return;
-
-    const copiedPages = sessionToCopy.pages.map(page => ({
-      ...page,
-      id: Date.now() + Math.random(),
-      components: page.components.map(component => ({
-        ...component,
-        id: Date.now() + Math.random(),
-      }))
-    }));
-
-    const copiedSession = {
-      ...sessionToCopy,
-      id: Date.now(),
-      name: `${sessionToCopy.name} (Copy)`,
-      order: sessions.length,
-      pages: copiedPages
-    };
-
-    setSessions([...sessions, copiedSession]);
-  };
-
-  const deleteSession = (sessionId) => {
-    const updatedSessions = sessions.filter(session => session.id !== sessionId)
-      .map((session, index) => ({
-        ...session,
-        order: index,
-      }));
-    
-
-    setSessions(updatedSessions);
-
-    if (selectedSession === sessionId) {
-      setSelectedSession(null);
-      setSelectedPage(null);
-      setSelectedComponent(null);
-      console.log(selectedPage);
-    }
-
-  }
-
-  const handleSetSelectedSession = (sessionId) => {
-    setSelectedSession(sessionId);
-    const session = sessions.find((session) => session.id === sessionId);
-    if (session && session.pages.length > 0) {
-      setSelectedPage(session.pages[0].id);
-    } else {
-      setSelectedPage(null);
-    }
-    setSelectedComponent(null);
-  };
-
-  const moveSession = (fromIndex, toIndex) => {
-    const updatedSessions = [...sessions];
-    const movedSession = updatedSessions.splice(fromIndex, 1)[0];
-    updatedSessions.splice(toIndex, 0, movedSession);
-
-    updatedSessions.forEach((session, index) => {
-      session.order = index;
-    });
-
-    setSessions(updatedSessions);
-  };
-
-
   const addPage = (pageName) => {
     const session = sessions.find((session) => session.id === selectedSession);
     console.log(session);
@@ -303,13 +215,11 @@ function App() {
       <div className='main-container'>
         <Sidebar 
           sessions={sessions}
-          addSession={addSesssion}
-          renameSession={renameSession}
-          copySession={copySession}
-          deleteSession={deleteSession}
+          setSessions={setSessions}
           selectedSession={selectedSession}
-          handleSetSelectedSession={handleSetSelectedSession}
-          moveSession={moveSession}
+          setSelectedSession={setSelectedSession}
+          setSelectedPage={setSelectedPage}
+          setSelectedComponent={setSelectedComponent}
         />
         <ContentMain
           sessions={sessions}
