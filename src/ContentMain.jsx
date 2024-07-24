@@ -5,8 +5,6 @@ import PageEditMenu from './PageEditMenu';
 import ComponentOption from './ComponentOption';
 import DraggablePage from './DraggablePage';
 import ComponentWrapper from './components/ComponentWrapper';
-// import TextComponent from './components/TextComponent';
-// import ImageComponent from './components/ImageComponent';
 import './ContentMain.css';
 
 
@@ -166,6 +164,97 @@ function ContentMain({
     setSelectedComponent(newComponent);
   };
 
+  const addAudioComponent = () => {
+    const newComponent = {
+      id: Date.now(),
+      type: 'audio',
+      src: 'none',
+      style: {
+        top: 100,
+        left: 100,
+        width: '300px',
+        height: '50px'
+      }
+    };
+
+    const updatedSessions = sessions.map((session) => {
+      if (session.id === selectedSession) {
+        return {
+          ...session,
+          pages: session.pages.map((page) => 
+            page.id === selectedPage
+            ? {...page, components: [ ...page.components, newComponent ]}
+            : page
+          ),
+        };
+      } return session;
+    });
+
+    setSessions(updatedSessions);
+    setSelectedComponent(newComponent)
+  }
+
+  const addVideoComponent = () => {
+    const newComponent = {
+      id: Date.now(),
+      type: 'video',
+      src: 'none',
+      style: {
+        top: 100,
+        left: 100,
+        width: '400px',
+        height: '200px'
+      }
+    };
+
+    const updatedSessions = sessions.map((session) => {
+      if (session.id === selectedSession) {
+        return {
+          ...session,
+          pages: session.pages.map((page) =>
+            page.id === selectedPage
+              ? { ...page, components: [ ...page.components, newComponent ]}
+              : page
+          ),
+        };
+      }
+      return session;
+    });
+    setSessions(updatedSessions);
+    setSelectedComponent(newComponent);
+  }
+
+  const addQnaComponent = () => {
+    const newComponent = {
+      id: Date.now(),
+      type: 'qna',
+      content: '질문을 입력하세요',
+      style: {
+        fontSize: '16px',
+        color: '#000000',
+        top: 100,
+        left: 100,
+        width: '400px',
+        height: '200px',
+      },
+    };
+
+    const updatedSessions = sessions.map((session) => {
+      if (session.id === selectedSession) {
+        return {
+          ...session,
+          pages: session.pages.map((page) => 
+            page.id === selectedPage 
+              ? { ...page, components: [...page.components, newComponent]}
+              : page
+          ),
+        };
+      } return session;
+    });
+    setSessions(updatedSessions);
+    setSelectedComponent(newComponent);
+  };
+
   const updateComponent = (componentId, newProperties) => {
     const updatedSessions = sessions.map((session) => {
       if (session.id === selectedSession) {
@@ -273,6 +362,9 @@ function ContentMain({
           <PageEditMenu
             addTextComponent={addTextComponent}
             addImageComponent={addImageComponent}
+            addAudioComponent={addAudioComponent}
+            addVideoComponent={addVideoComponent}
+            addQnaComponent={addQnaComponent}
             changePageBackgroundImage={changePageBackgroundImage}
           />
         )}

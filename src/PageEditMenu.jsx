@@ -4,6 +4,9 @@ import './PageEditMenu.css'
 function PageEditMenu({
     addTextComponent,
     addImageComponent,
+    addAudioComponent,
+    addVideoComponent,
+    addQnaComponent,
     changePageBackgroundImage
 }) {
     const [isBackgroundUploadPopupOpen, setBackgroundUploadPoupOpen] = useState(false);
@@ -44,13 +47,31 @@ function PageEditMenu({
                         className='page-edit-body-li'
                         onClick={addTextComponent}
                     >
-                    <div><p>텍스트</p></div>
+                        <div><p>텍스트</p></div>
                     </li>
                     <li 
                         className='page-edit-body-li'
                         onClick={addImageComponent}
                     >
-                    <div><p>이미지</p></div>
+                        <div><p>이미지</p></div>
+                    </li>
+                    <li 
+                        className='page-edit-body-li'
+                        onClick={addAudioComponent}
+                    >
+                        <div><p>오디오</p></div>
+                    </li>
+                    <li 
+                        className='page-edit-body-li'
+                        onClick={addVideoComponent}
+                    >
+                        <div><p>비디오</p></div>
+                    </li>
+                    <li 
+                        className='page-edit-body-li'
+                        onClick={addQnaComponent}
+                    >
+                        <div><p>질문 답변</p></div>
                     </li>
                 </ul>
             </div>

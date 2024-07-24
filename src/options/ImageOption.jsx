@@ -25,4 +25,4 @@ function ImageOption({
     );
 }
 
-export default ImageOption
+export default ImageOption;

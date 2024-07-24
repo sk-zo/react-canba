@@ -1,9 +1,16 @@
 import React, { useRef } from 'react';
 import './TextComponent.css';
 
-function TextComponent({ id, content, style, updateComponent, setSelectedComponent, contentPageRef }) {
-  const type = "text";
+function TextComponent({ 
+  id, 
+  content, 
+  style, 
+  updateComponent, 
+  setSelectedComponent, 
+  contentPageRef 
+}) {
   const textRef = useRef(null);
+  const type = 'text';
 
   const handleChange = (e) => {
     updateComponent(id, { content: e.target.value });

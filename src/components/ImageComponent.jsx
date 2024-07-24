@@ -2,8 +2,8 @@ import React, { useRef } from 'react';
 import './ImageComponent.css';
 
 function ImageComponent({ id, src, style, updateComponent, setSelectedComponent, contentPageRef }) {
-    const type = "image";
     const imgRef = useRef(null);
+    const type = 'image';
 
 
     const handleMouseDown = (e) => {
@@ -93,7 +93,7 @@ function ImageComponent({ id, src, style, updateComponent, setSelectedComponent,
       onMouseDown={handleMouseDown}
       onClick={handleClick}
     >
-      <img src={src} alt="" style={{width: '100%', height: '100%'}}/>
+      <img src={src} alt=""/>
       <div
         className="resize-handle bottom-right"
         onMouseDown={(e) => handleResizeMouseDown(e, 'bottom-right')}

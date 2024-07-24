@@ -1,9 +1,15 @@
 import TextOption from "./TextOption";
 import ImageOption from "./ImageOption";
+import AudioOption from "./AudioOption";
+import VideoOption from "./VideoOption";
+import QnaOption from "./QnaOption";
 
 const optionMap = {
     text: TextOption,
     image: ImageOption,
+    audio: AudioOption,
+    video: VideoOption,
+    qna: QnaOption,
 };
 
 function OptionWrapper({
@@ -25,4 +31,4 @@ function OptionWrapper({
     return <Option {...commonProps} />
 }
 
-export default OptionWrapper
+export default OptionWrapper;

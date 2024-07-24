@@ -1,0 +1,17 @@
+.resize-handle {
+    width: 8px;
+    height: 8px;
+    background: none;
+    position: absolute;
+    cursor: se-resize;
+  }
+  
+  .resize-handle:hover{
+    background-color: #000;
+  }
+  
+  .bottom-right {
+    right: 0;
+    bottom: 0;
+    transform: translate(50%, 50%);
+  }

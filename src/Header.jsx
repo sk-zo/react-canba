@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 function Header() {
   return (
     <div className="header">
-        <a href="/">home</a>
+        <a href="http://localhost:8080/">home</a>
     </div>
   );
 }
