@@ -6,6 +6,7 @@
     box-sizing: border-box;
     border: 2px solid transparent;
     resize: none;
+    padding: 5px;
     user-select: none;
 }
   

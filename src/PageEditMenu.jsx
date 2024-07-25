@@ -6,6 +6,7 @@ function PageEditMenu({
     addImageComponent,
     addAudioComponent,
     addVideoComponent,
+    addFileComponent,
     addQnaComponent,
     changePageBackgroundImage
 }) {
@@ -66,6 +67,12 @@ function PageEditMenu({
                         onClick={addVideoComponent}
                     >
                         <div><p>비디오</p></div>
+                    </li>
+                    <li 
+                        className='page-edit-body-li'
+                        onClick={addFileComponent}
+                    >
+                        <div><p>파일</p></div>
                     </li>
                     <li 
                         className='page-edit-body-li'

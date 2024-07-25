@@ -2,6 +2,7 @@ import TextComponent from './TextComponent';
 import ImageComponent from './ImageComponent';
 import AudioComponent from './AudioComponent';
 import VideoComponent from './VideoComponent';
+import FileComponent from './FileComponent';
 import QnaComponent from './QnaComponent';
 import './common.css';
 
@@ -10,6 +11,7 @@ const componentMap = {
   image: ImageComponent,
   audio: AudioComponent,
   video: VideoComponent,
+  file: FileComponent,
   qna: QnaComponent,
 };
 
@@ -37,6 +39,7 @@ function ComponentWrapper({
     image: { src: component.src, style: component.style },
     audio: { src: component.src, style: component.style },
     video: { src: component.src, style: component.style },
+    file: { src: component.src, style: component.style },
     qna: { content: component.content, style: component.style },
   }
 

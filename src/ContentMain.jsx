@@ -224,6 +224,37 @@ function ContentMain({
     setSelectedComponent(newComponent);
   }
 
+  const addFileComponent = () => {
+    const newComponent = {
+      id: Date.now(),
+      type: "file",
+      src: "",
+      style: {
+        top: 100,
+        left: 100,
+        width: '200px',
+        height: '50px'
+      }
+    };
+
+    const updatedSessions = sessions.map((session) => {
+      if (session.id === selectedSession) {
+        return {
+          ...session,
+          pages: session.pages.map((page) => 
+            page.id === selectedPage
+            ? { ...page, components: [ ...page.components, newComponent ] }
+            : page
+          ),
+        };
+      }
+      return session;
+    });
+    
+    setSessions(updatedSessions);
+    setSelectedComponent(newComponent);
+  }
+
   const addQnaComponent = () => {
     const newComponent = {
       id: Date.now(),
@@ -364,6 +395,7 @@ function ContentMain({
             addImageComponent={addImageComponent}
             addAudioComponent={addAudioComponent}
             addVideoComponent={addVideoComponent}
+            addFileComponent={addFileComponent}
             addQnaComponent={addQnaComponent}
             changePageBackgroundImage={changePageBackgroundImage}
           />
