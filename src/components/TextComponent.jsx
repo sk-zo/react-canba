@@ -1,35 +1,35 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef } from 'react';
 import './TextComponent.css';
 
-function TextComponent({ id, content, style, updateComponent, setSelectedComponent, contentPageRef }) {
+function TextComponent({ 
+  id, 
+  content, 
+  style, 
+  updateComponent, 
+  setSelectedComponent, 
+  contentPageRef 
+}) {
   const textRef = useRef(null);
-  const [dimensions, setDimensions] = useState({ width: 200, height: 50 });
-
-  useEffect(() => {
-    const textElement = textRef.current;
-    const handleResize = () => {
-      if (textElement) {
-        // textElement.style.height = 'auto'; // Reset height to calculate new height
-        textElement.style.height = `${textElement.scrollHeight}px`; // Set to scrollHeight for auto-adjusting height
-        setDimensions({
-          width: textElement.offsetWidth,
-          height: textElement.scrollHeight
-        });
-      }
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [content]);
+  const type = 'text';
 
   const handleChange = (e) => {
     updateComponent(id, { content: e.target.value });
   };
 
   const handleMouseDown = (e) => {
+    e.stopPropagation();
     const textElement = textRef.current;
-    const offsetX = e.clientX - textElement.getBoundingClientRect().left;
-    const offsetY = e.clientY - textElement.getBoundingClientRect().top;
+    const rect = textElement.getBoundingClientRect();
+    const isBorderClick =
+      e.clientX < rect.left + 5 ||
+      e.clientX > rect.right - 5 ||
+      e.clientY < rect.top + 5 ||
+      e.clientY > rect.bottom - 5;
+
+    if (!isBorderClick) return;
+
+    const offsetX = e.clientX - rect.left;
+    const offsetY = e.clientY - rect.top;
 
     const handleMouseMove = (moveEvent) => {
       const contentPage = contentPageRef.current;
@@ -58,6 +58,9 @@ function TextComponent({ id, content, style, updateComponent, setSelectedCompone
   const handleResizeMouseDown = (e, direction) => {
     e.stopPropagation();
     const textElement = textRef.current;
+    const rect = textElement.getBoundingClientRect();
+    const contentPage = contentPageRef.current;
+    const contentPageRect = contentPage.getBoundingClientRect();
     const initialX = e.clientX;
     const initialY = e.clientY;
     const initialWidth = textElement.offsetWidth;
@@ -68,13 +71,12 @@ function TextComponent({ id, content, style, updateComponent, setSelectedCompone
       let newHeight = initialHeight;
 
       if (direction.includes('right')) {
-        newWidth = Math.max(50, initialWidth + (moveEvent.clientX - initialX));
+        newWidth = Math.min(contentPageRect.right - rect.left, Math.max(50, initialWidth + (moveEvent.clientX - initialX)));
       }
       if (direction.includes('bottom')) {
-        newHeight = Math.max(50, initialHeight + (moveEvent.clientY - initialY));
+        newHeight = Math.min(contentPageRect.bottom - rect.top, Math.max(50, initialHeight + (moveEvent.clientY - initialY)));
       }
 
-      setDimensions({ width: newWidth, height: newHeight });
       updateComponent(id, {
         style: {
           ...style,
@@ -94,14 +96,14 @@ function TextComponent({ id, content, style, updateComponent, setSelectedCompone
   };
 
   const handleClick = () => {
-    setSelectedComponent({ id, content, style });
+    setSelectedComponent({ id, type, content, style });
   };
 
   return (
     <div
       ref={textRef}
       className="text-component"
-      style={{ ...style, ...dimensions }}
+      style={{ ...style }}
       onMouseDown={handleMouseDown}
       onClick={handleClick}
     >
