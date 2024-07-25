@@ -22,6 +22,13 @@ function QnaOption({
         });
     };
 
+    const addQuestion = () => {
+      const updatedQuestions = [...component.questions, '질문을 입력해주세요.'];
+      updateComponent(component.id, {questions: updatedQuestions});
+    }
+
+
+
     return (
         <div>
           <label>
@@ -36,6 +43,8 @@ function QnaOption({
             Color:
             <input type="color" value={component.style.color} onChange={handleColorChange} />
           </label>
+          <button onClick={addQuestion}>문항 추가</button>
+
         </div>
     );
 }

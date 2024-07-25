@@ -40,7 +40,7 @@ function ComponentWrapper({
     audio: { src: component.src, style: component.style },
     video: { src: component.src, style: component.style },
     file: { src: component.src, style: component.style },
-    qna: { content: component.content, style: component.style },
+    qna: { questions: component.questions, style: component.style },
   }
 
   return <Component {...commonProps} {...specificProps[component.type]} />

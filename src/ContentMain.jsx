@@ -259,7 +259,7 @@ function ContentMain({
     const newComponent = {
       id: Date.now(),
       type: 'qna',
-      content: '질문을 입력하세요',
+      questions: ['질문을 입력하세요'],
       style: {
         fontSize: '16px',
         color: '#000000',

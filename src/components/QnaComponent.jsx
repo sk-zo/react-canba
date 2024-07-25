@@ -3,7 +3,7 @@ import './QnaComponent.css';
 
 function QnaComponent({
     id,
-    content,
+    questions,
     style,
     updateComponent,
     setSelectedComponent,
@@ -12,8 +12,10 @@ function QnaComponent({
     const qnaRef = useRef(null);
     const type = 'qna';
 
-    const handleChange = (e) => {
-        updateComponent(id, { content: e.target.value });
+    const handleChange = (e, index) => {
+        const updatedQuestions = [...questions];
+        updatedQuestions[index] = e.target.value;
+        updateComponent(id, { questions: updatedQuestions });
     }
 
     const handleMouseDown = (e) => {
@@ -95,7 +97,7 @@ function QnaComponent({
       };
 
       const handleClick = () => {
-        setSelectedComponent({ id, type, content, style });
+        setSelectedComponent({ id, type, questions, style });
       };
 
 
@@ -107,18 +109,22 @@ function QnaComponent({
             onMouseDown={handleMouseDown}
             onClick={handleClick}
         >   
-            <div className="qna-sub-component">
-                <textarea 
-                    value={content}
-                    style={{ fontSize: style.fontSize, color: style.color}}
-                    onChange={handleChange}
-                />
-            </div>
-            <div className="qna-sub-component">
-                <textarea 
-                    placeholder="답변을 입력해주세요."
-                />
-            </div>
+            {questions.map((question, index) => (
+                <div className="qna-sub-component" key={index}>
+                    <div>
+                        <textarea 
+                            value={question}
+                            style={{ fontSize: style.fontSize, color: style.color}}
+                            onChange={(e) => handleChange(e, index)} // handleChange에 index를 전달하여 특정 질문을 변경할 수 있도록 합니다.
+                        />
+                    </div>
+                    <div>
+                        <textarea 
+                            placeholder="답변을 입력해주세요."
+                        />
+                    </div>
+                </div>
+            ))}
             
             <div className="qna-submit">
                 <button>제출하기</button>

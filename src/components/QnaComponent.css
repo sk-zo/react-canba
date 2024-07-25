@@ -8,6 +8,7 @@
     resize: none;
     padding: 5px;
     user-select: none;
+    min-height: auto;
 }
   
 .qna-component:hover {
