@@ -23,11 +23,17 @@ function QnaOption({
     };
 
     const addQuestion = () => {
+      
       const updatedQuestions = [...component.questions, '질문을 입력해주세요.'];
-      updateComponent(component.id, {questions: updatedQuestions});
+      updateComponent(component.id, {questions: updatedQuestions, style: {...component.style, height:'min-content'}});
     }
 
-
+    const removeQuestion = () => {
+      const updatedQuestions = component.questions.length > 1 
+                              ? component.questions.slice(0, -1)
+                              : component.questions;
+      updateComponent(component.id, {questions: updatedQuestions, style: {...component.style, height:'min-content'}});
+    }
 
     return (
         <div>
@@ -44,6 +50,7 @@ function QnaOption({
             <input type="color" value={component.style.color} onChange={handleColorChange} />
           </label>
           <button onClick={addQuestion}>문항 추가</button>
+          <button onClick={removeQuestion}>문항 제거</button>
 
         </div>
     );

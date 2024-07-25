@@ -57,6 +57,9 @@ function FileComponent({id, src, style, updateComponent, setSelectedComponent, c
     const handleResizeMouseDown = (e, direction) => {
         e.stopPropagation();
         const fileElement = fileRef.current;
+        const rect = fileElement.getBoundingClientRect();
+        const contentPage = contentPageRef.current;
+        const contentPageRect = contentPage.getBoundingClientRect();
         const initialX = e.clientX;
         const initialY = e.clientY;
         const initialWidth = fileElement.offsetWidth;
@@ -67,11 +70,10 @@ function FileComponent({id, src, style, updateComponent, setSelectedComponent, c
             let newHeight = initialHeight;
 
             if (direction.includes('right')) {
-                newWidth = Math.max(50, initialWidth + (moveEvent.clientX - initialX));
+                newWidth = Math.min(contentPageRect.right - rect.left, Math.max(50, initialWidth + (moveEvent.clientX - initialX)));
             }
-
-            if (direction.includes('bottom')) {
-                newHeight = Math.max(50, initialHeight + (moveEvent.clientY - initialY));
+              if (direction.includes('bottom')) {
+                newHeight = Math.min(contentPageRect.bottom - rect.top, Math.max(50, initialHeight + (moveEvent.clientY - initialY)));
             }
 
             updateComponent(id, {

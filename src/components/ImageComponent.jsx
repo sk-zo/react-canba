@@ -7,46 +7,51 @@ function ImageComponent({ id, src, style, updateComponent, setSelectedComponent,
 
 
     const handleMouseDown = (e) => {
-        const imgElement = imgRef.current;
-        const rect = imgElement.getBoundingClientRect();
-        const isBorderClick =
-            e.clientX < rect.left + 5 ||
-            e.clientX > rect.right - 5 ||
-            e.clientY < rect.top + 5 ||
-            e.clientY > rect.bottom - 5;
+      e.stopPropagation();
 
-        if (!isBorderClick) return;
+      const imgElement = imgRef.current;
+      const rect = imgElement.getBoundingClientRect();
+      const isBorderClick =
+          e.clientX < rect.left + 5 ||
+          e.clientX > rect.right - 5 ||
+          e.clientY < rect.top + 5 ||
+          e.clientY > rect.bottom - 5;
 
-        const offsetX = e.clientX - rect.left;
-        const offsetY = e.clientY - rect.top;
+      if (!isBorderClick) return;
 
-        const handleMouseMove = (moveEvent) => {
-            const contentPage = contentPageRef.current;
-            const contentPageRect = contentPage.getBoundingClientRect();
-            const newLeft = Math.max(contentPageRect.left, Math.min(moveEvent.clientX - offsetX, contentPageRect.right - imgElement.offsetWidth));
-            const newTop = Math.max(contentPageRect.top, Math.min(moveEvent.clientY - offsetY, contentPageRect.bottom - imgElement.offsetHeight));
+      const offsetX = e.clientX - rect.left;
+      const offsetY = e.clientY - rect.top;
 
-            updateComponent(id, {
-                style: {
-                ...style,
-                top: newTop - contentPageRect.top,
-                left: newLeft - contentPageRect.left,
-                },
-            });
-        };
+      const handleMouseMove = (moveEvent) => {
+          const contentPage = contentPageRef.current;
+          const contentPageRect = contentPage.getBoundingClientRect();
+          const newLeft = Math.max(contentPageRect.left, Math.min(moveEvent.clientX - offsetX, contentPageRect.right - imgElement.offsetWidth));
+          const newTop = Math.max(contentPageRect.top, Math.min(moveEvent.clientY - offsetY, contentPageRect.bottom - imgElement.offsetHeight));
 
-        const handleMouseUp = () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-        };
+          updateComponent(id, {
+              style: {
+              ...style,
+              top: newTop - contentPageRect.top,
+              left: newLeft - contentPageRect.left,
+              },
+          });
+      };
 
-        document.addEventListener('mousemove', handleMouseMove);
-        document.addEventListener('mouseup', handleMouseUp);
+      const handleMouseUp = () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      };
+
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
     };
 
   const handleResizeMouseDown = (e, direction) => {
     e.stopPropagation();
     const imageElement = imgRef.current;
+    const rect = imageElement.getBoundingClientRect();
+    const contentPage = contentPageRef.current;
+    const contentPageRect = contentPage.getBoundingClientRect();
     const initialX = e.clientX;
     const initialY = e.clientY;
     const initialWidth = imageElement.offsetWidth;
@@ -57,10 +62,10 @@ function ImageComponent({ id, src, style, updateComponent, setSelectedComponent,
       let newHeight = initialHeight;
 
       if (direction.includes('right')) {
-        newWidth = Math.max(50, initialWidth + (moveEvent.clientX - initialX));
+        newWidth = Math.min(contentPageRect.right - rect.left, Math.max(50, initialWidth + (moveEvent.clientX - initialX)));
       }
       if (direction.includes('bottom')) {
-        newHeight = Math.max(50, initialHeight + (moveEvent.clientY - initialY));
+        newHeight = Math.min(contentPageRect.bottom - rect.top, Math.max(50, initialHeight + (moveEvent.clientY - initialY)));
       }
 
       updateComponent(id, {

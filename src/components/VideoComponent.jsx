@@ -7,6 +7,7 @@ function VideoComponent({id, src, style, updateComponent,
     const type = 'video';
 
     const handleMouseDown = (e) => {
+        e.stopPropagation();
         const videoElement = videoRef.current;
         const rect = videoElement.getBoundingClientRect();
         const isBorderClick =
@@ -49,6 +50,9 @@ function VideoComponent({id, src, style, updateComponent,
     const handleResizeMouseDown = (e, direction) => {
         e.stopPropagation();
         const videoElement = videoRef.current;
+        const rect = videoElement.getBoundingClientRect();
+        const contentPage = contentPageRef.current;
+        const contentPageRect = contentPage.getBoundingClientRect();
         const initialX = e.clientX;
         const initialY = e.clientY;
         const initialWidth = videoElement.offsetWidth;
@@ -59,11 +63,11 @@ function VideoComponent({id, src, style, updateComponent,
             let newHeight = initialHeight;
 
             if (direction.includes('right')) {
-                newWidth = Math.max(50, initialWidth + (moveEvent.clientX - initialX));
+                newWidth = Math.min(contentPageRect.right - rect.left, Math.max(50, initialWidth + (moveEvent.clientX - initialX)));
             }
 
             if (direction.includes('bottom')) {
-                newHeight = Math.max(50, initialHeight + (moveEvent.clientY - initialY));
+                newHeight = Math.min(contentPageRect.bottom - rect.top, Math.max(50, initialHeight + (moveEvent.clientY - initialY)));
             }
 
             updateComponent(id, {

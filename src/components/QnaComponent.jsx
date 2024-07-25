@@ -19,6 +19,7 @@ function QnaComponent({
     }
 
     const handleMouseDown = (e) => {
+        e.stopPropagation();
         const qnaElement = qnaRef.current;
         const rect = qnaElement.getBoundingClientRect();
         const isBorderClick =
@@ -62,6 +63,9 @@ function QnaComponent({
     const handleResizeMouseDown = (e, direction) => {
         e.stopPropagation();
         const qnaElement = qnaRef.current;
+        const rect = qnaElement.getBoundingClientRect();
+        const contentPage = contentPageRef.current;
+        const contentPageRect = contentPage.getBoundingClientRect();
         const initialX = e.clientX;
         const initialY = e.clientY;
         const initialWidth = qnaElement.offsetWidth;
@@ -72,11 +76,11 @@ function QnaComponent({
           let newHeight = initialHeight;
     
           if (direction.includes('right')) {
-            newWidth = Math.max(50, initialWidth + (moveEvent.clientX - initialX));
-          }
+            newWidth = Math.min(contentPageRect.right - rect.left, Math.max(50, initialWidth + (moveEvent.clientX - initialX)));
+        }
           if (direction.includes('bottom')) {
-            newHeight = Math.max(50, initialHeight + (moveEvent.clientY - initialY));
-          }
+            newHeight = Math.min(contentPageRect.bottom - rect.top, Math.max(50, initialHeight + (moveEvent.clientY - initialY)));
+        }
     
           updateComponent(id, {
             style: {
@@ -115,7 +119,7 @@ function QnaComponent({
                         <textarea 
                             value={question}
                             style={{ fontSize: style.fontSize, color: style.color}}
-                            onChange={(e) => handleChange(e, index)} // handleChange에 index를 전달하여 특정 질문을 변경할 수 있도록 합니다.
+                            onChange={(e) => handleChange(e, index)}
                         />
                     </div>
                     <div>

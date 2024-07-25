@@ -24,6 +24,8 @@ function ContentMain({
   const session = sessions.find((session) => session.id === selectedSession);
   const pages = session ? session.pages : [];
   const page = pages.find(page => page.id === selectedPage);
+  const components = page ? page.components : [];
+  const component = selectedComponent ? components.find(component => component.id === selectedComponent.id) : null;
   const backgroundImage = page?.backgroundImage || '';
 
   useEffect(() => {
@@ -402,7 +404,7 @@ function ContentMain({
         )}
         {selectedComponent && (
           <ComponentOption
-            component={selectedComponent}
+            component={component}
             updateComponent={updateComponent}
             deleteComponent={deleteComponent}
           />

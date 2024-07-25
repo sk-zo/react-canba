@@ -17,6 +17,7 @@ function TextComponent({
   };
 
   const handleMouseDown = (e) => {
+    e.stopPropagation();
     const textElement = textRef.current;
     const rect = textElement.getBoundingClientRect();
     const isBorderClick =
@@ -57,6 +58,9 @@ function TextComponent({
   const handleResizeMouseDown = (e, direction) => {
     e.stopPropagation();
     const textElement = textRef.current;
+    const rect = textElement.getBoundingClientRect();
+    const contentPage = contentPageRef.current;
+    const contentPageRect = contentPage.getBoundingClientRect();
     const initialX = e.clientX;
     const initialY = e.clientY;
     const initialWidth = textElement.offsetWidth;
@@ -67,10 +71,10 @@ function TextComponent({
       let newHeight = initialHeight;
 
       if (direction.includes('right')) {
-        newWidth = Math.max(50, initialWidth + (moveEvent.clientX - initialX));
+        newWidth = Math.min(contentPageRect.right - rect.left, Math.max(50, initialWidth + (moveEvent.clientX - initialX)));
       }
       if (direction.includes('bottom')) {
-        newHeight = Math.max(50, initialHeight + (moveEvent.clientY - initialY));
+        newHeight = Math.min(contentPageRect.bottom - rect.top, Math.max(50, initialHeight + (moveEvent.clientY - initialY)));
       }
 
       updateComponent(id, {
