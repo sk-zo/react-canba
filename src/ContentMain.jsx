@@ -49,7 +49,6 @@ function ContentMain({
 
   const addPage = (pageName) => {
     const session = sessions.find((session) => session.id === selectedSession);
-    console.log(session);
     const newPage = {
       id: Date.now(),
       name: pageName,
@@ -57,12 +56,17 @@ function ContentMain({
       components: [],
       backgroundImage: ''
     };
-    const updatedSessions = sessions.map((session) =>
-      session.id === selectedSession
-        ? { ...session, pages: [...session.pages, newPage]}
-        : session
+
+    setSessions(prevSessions =>
+      prevSessions.map(session =>
+        session.id === selectedSession ?
+        {
+          ...session,
+          pages: [...session.pages, newPage],
+        } : session
+      )
     );
-    setSessions(updatedSessions);
+
     setSelectedPage(newPage.id);
   }
 
@@ -84,26 +88,21 @@ function ContentMain({
   };
 
   const changePageBackgroundImage = (imageUrl) => {
-    const updatedSessions = sessions.map((session) => {
-      if (session.id === selectedSession) {
-        return {
+    setSessions(prevSessions =>
+      prevSessions.map(session =>
+        session.id === selectedSession ?
+        {
           ...session,
-          pages: session.pages.map((page) => {
-            if (page.id === selectedPage) {
-              return {
-                ...page,
-                backgroundImage: imageUrl
-              };
-            }
-            return page;
-          })
-        }
-      }
-      return session;
-    });
-    
-    setSessions(updatedSessions);
-
+          pages: session.pages.map(page =>
+            page.id === selectedPage ?
+            {
+              ...page,
+              backgroundImage: imageUrl,
+            } : page
+          ),
+        } : session
+      )
+    );
   };
 
   const addTextComponent = () => {
@@ -121,19 +120,21 @@ function ContentMain({
       },
     };
 
-    const updatedSessions = sessions.map((session) => {
-      if (session.id === selectedSession) {
-        return {
+    setSessions(prevSessions =>
+      prevSessions.map(session =>
+        session.id === selectedSession ?
+        {
           ...session,
-          pages: session.pages.map((page) => 
-            page.id === selectedPage 
-              ? { ...page, components: [...page.components, newComponent]}
-              : page
+          pages: session.pages.map(page =>
+            page.id === selectedPage ?
+            {
+              ...page,
+              components: [...page.components, newComponent],
+            } : page
           ),
-        };
-      } return session;
-    });
-    setSessions(updatedSessions);
+        } : session
+      )
+    );
     setSelectedComponent(newComponent);
   };
 
@@ -150,19 +151,21 @@ function ContentMain({
       }
     };
 
-    const updatedSessions = sessions.map((session) => {
-      if (session.id === selectedSession) {
-        return {
+    setSessions(prevSessions =>
+      prevSessions.map(session =>
+        session.id === selectedSession ?
+        {
           ...session,
-          pages: session.pages.map((page) => 
-            page.id === selectedPage 
-              ? { ...page, components: [...page.components, newComponent]}
-              : page
+          pages: session.pages.map(page =>
+            page.id === selectedPage ?
+            {
+              ...page,
+              components: [...page.components, newComponent],
+            } : page
           ),
-        };
-      } return session;
-    });
-    setSessions(updatedSessions);
+        } : session
+      )
+    );
     setSelectedComponent(newComponent);
   };
 
@@ -179,20 +182,21 @@ function ContentMain({
       }
     };
 
-    const updatedSessions = sessions.map((session) => {
-      if (session.id === selectedSession) {
-        return {
+    setSessions(prevSessions =>
+      prevSessions.map(session =>
+        session.id === selectedSession ?
+        {
           ...session,
-          pages: session.pages.map((page) => 
+          pages: session.pages.map(page =>
             page.id === selectedPage
-            ? {...page, components: [ ...page.components, newComponent ]}
-            : page
+            ? {
+              ...page,
+              components: [...page.components, newComponent],
+            } : page
           ),
-        };
-      } return session;
-    });
-
-    setSessions(updatedSessions);
+        } : session
+      )
+    );
     setSelectedComponent(newComponent)
   }
 
@@ -209,20 +213,21 @@ function ContentMain({
       }
     };
 
-    const updatedSessions = sessions.map((session) => {
-      if (session.id === selectedSession) {
-        return {
+    setSessions(prevSessions =>
+      prevSessions.map(session =>
+        session.id === selectedSession ?
+        {
           ...session,
-          pages: session.pages.map((page) =>
-            page.id === selectedPage
-              ? { ...page, components: [ ...page.components, newComponent ]}
-              : page
+          pages: session.pages.map(page =>
+            page.id === selectedPage ?
+            {
+              ...page,
+              components: [...page.components, newComponent],
+            } : page
           ),
-        };
-      }
-      return session;
-    });
-    setSessions(updatedSessions);
+        } : session
+      )
+    );
     setSelectedComponent(newComponent);
   }
 
@@ -239,21 +244,21 @@ function ContentMain({
       }
     };
 
-    const updatedSessions = sessions.map((session) => {
-      if (session.id === selectedSession) {
-        return {
+    setSessions(prevSessions =>
+      prevSessions.map(session =>
+        session.id === selectedSession ?
+        {
           ...session,
-          pages: session.pages.map((page) => 
-            page.id === selectedPage
-            ? { ...page, components: [ ...page.components, newComponent ] }
-            : page
+          pages: session.pages.map(page =>
+            page.id === selectedPage ?
+            {
+              ...page,
+              components: [...page.components, newComponent],
+            } : page
           ),
-        };
-      }
-      return session;
-    });
-    
-    setSessions(updatedSessions);
+        } : session
+      )
+    );
     setSelectedComponent(newComponent);
   }
 
@@ -273,19 +278,21 @@ function ContentMain({
       },
     };
 
-    const updatedSessions = sessions.map((session) => {
-      if (session.id === selectedSession) {
-        return {
+    setSessions(prevSessions =>
+      prevSessions.map(session =>
+        session.id === selectedSession ?
+        {
           ...session,
-          pages: session.pages.map((page) => 
-            page.id === selectedPage 
-              ? {...page, components: [...page.components, newComponent]}
-              : page
+          pages: session.pages.map(page =>
+            page.id === selectedPage ?
+            {
+              ...page,
+              components: [...page.components, newComponent],
+            } : page
           ),
-        };
-      } return session;
-    });
-    setSessions(updatedSessions);
+        } : session
+      )
+    );
     setSelectedComponent(newComponent);
   };
 
@@ -304,64 +311,61 @@ function ContentMain({
       },
     };
 
-    const updatedSessions = sessions.map((session) => {
-      if (session.id === selectedSession) {
-        return {
+    setSessions(prevSessions =>
+      prevSessions.map(session =>
+        session.id === selectedSession ?
+        {
           ...session,
-          pages: session.pages.map((page) =>
-            page.id === selectedPage
-            ? {...page, components: [...page.components, newComponent]}  
-            : page
+          pages: session.pages.map(page =>
+            page.id === selectedPage ?
+            {
+              ...page,
+              components: [...page.components, newComponent],
+            } : page
           ),
-        };
-      }
-      return session;
-    });
-    setSessions(updatedSessions);
+        } : session
+      )
+    );
     setSelectedComponent(newComponent);
   }
 
   const updateComponent = (componentId, newProperties) => {
-    const updatedSessions = sessions.map((session) => {
-      if (session.id === selectedSession) {
-        return {
+    setSessions(prevSessions =>
+      prevSessions.map(session =>
+        session.id === selectedSession ?
+        {
           ...session,
-          pages: session.pages.map((page) => {
-            if (page.id === selectedPage) {
-              return {
-                ...page,
-                components: page.components.map((component) =>
-                  component.id === componentId 
-                    ? { ...component, ...newProperties } : component
-                ),
-              };
-            } return page;
-          })
-        }
-      } return session;
-    })
-    setSessions(updatedSessions);
+          pages: session.pages.map(page =>
+            page.id === selectedPage ?
+            {
+              ...page,
+              components: page.components.map(component =>
+                component.id === componentId ?
+                { ...component, ...newProperties } : component
+              ),
+            } : page
+          ),
+        } : session
+      )
+    );
   };
 
   const deleteComponent = (componentId) => {
-    const updatedSessions = sessions.map((session) => {
-      if (session.id === selectedSession) {
-        return {
+    setSessions(prevSessions =>
+      prevSessions.map(session => 
+        session.id === selectedSession ?
+        {
           ...session,
-          pages: session.pages.map((page) => {
-            if (page.id === selectedPage) {
-              return {
-                ...page,
-                components: page.components.filter((component) => component.id !== componentId)
-              };
-            }
-            return page;
-          }) 
-        }
-      }
-      return session;
-    });
-    setSessions(updatedSessions);
+          pages: session.pages.map(page =>
+            page.id === selectedPage ?
+            {
+              ...page,
+              components: page.components.filter((component) => component.id !== componentId)
+            } : page
+          ),
+        } : session
+      )
+    );
     setSelectedComponent(null);
   }
 
