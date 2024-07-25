@@ -265,6 +265,7 @@ function ContentMain({
       style: {
         fontSize: '16px',
         color: '#000000',
+        backgroundColor: 'transparent',
         top: 100,
         left: 100,
         width: '400px',
@@ -278,7 +279,7 @@ function ContentMain({
           ...session,
           pages: session.pages.map((page) => 
             page.id === selectedPage 
-              ? { ...page, components: [...page.components, newComponent]}
+              ? {...page, components: [...page.components, newComponent]}
               : page
           ),
         };
@@ -287,6 +288,38 @@ function ContentMain({
     setSessions(updatedSessions);
     setSelectedComponent(newComponent);
   };
+
+  const addVotingComponent = () => {
+    const newComponent = {
+      id: Date.now(),
+      type: 'voting',
+      items: [{content: '내용을 입력해주세요.', isSelected: false}],
+      style: {
+        fontSize: '16px',
+        color: '#000000',
+        top: 100,
+        left: 100,
+        width: '400px',
+        height: 'min-content',
+      },
+    };
+
+    const updatedSessions = sessions.map((session) => {
+      if (session.id === selectedSession) {
+        return {
+          ...session,
+          pages: session.pages.map((page) =>
+            page.id === selectedPage
+            ? {...page, components: [...page.components, newComponent]}  
+            : page
+          ),
+        };
+      }
+      return session;
+    });
+    setSessions(updatedSessions);
+    setSelectedComponent(newComponent);
+  }
 
   const updateComponent = (componentId, newProperties) => {
     const updatedSessions = sessions.map((session) => {
@@ -399,6 +432,7 @@ function ContentMain({
             addVideoComponent={addVideoComponent}
             addFileComponent={addFileComponent}
             addQnaComponent={addQnaComponent}
+            addVotingComponent={addVotingComponent}
             changePageBackgroundImage={changePageBackgroundImage}
           />
         )}

@@ -24,18 +24,18 @@ function TextOption({
 
     return (
         <div>
-          <label>
+          <div>
           Font Size:
           <input
             type="number"
             value={parseInt(component.style.fontSize)}
             onChange={handleFontSizeChange}
           />
-          </label>
-          <label>
+          </div>
+          <div>
             Color:
             <input type="color" value={component.style.color} onChange={handleColorChange} />
-          </label>
+          </div>
         </div>
     );
 }

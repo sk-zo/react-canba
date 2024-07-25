@@ -4,6 +4,7 @@ import AudioComponent from './AudioComponent';
 import VideoComponent from './VideoComponent';
 import FileComponent from './FileComponent';
 import QnaComponent from './QnaComponent';
+import VotingComponent from './VotingComponent';
 import './common.css';
 
 const componentMap = {
@@ -13,6 +14,7 @@ const componentMap = {
   video: VideoComponent,
   file: FileComponent,
   qna: QnaComponent,
+  voting: VotingComponent
 };
 
 function ComponentWrapper({ 
@@ -41,6 +43,7 @@ function ComponentWrapper({
     video: { src: component.src, style: component.style },
     file: { src: component.src, style: component.style },
     qna: { questions: component.questions, style: component.style },
+    voting: { items: component.items, style: component.style }
   }
 
   return <Component {...commonProps} {...specificProps[component.type]} />

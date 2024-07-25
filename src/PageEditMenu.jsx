@@ -8,6 +8,7 @@ function PageEditMenu({
     addVideoComponent,
     addFileComponent,
     addQnaComponent,
+    addVotingComponent,
     changePageBackgroundImage
 }) {
     const [isBackgroundUploadPopupOpen, setBackgroundUploadPoupOpen] = useState(false);
@@ -79,6 +80,12 @@ function PageEditMenu({
                         onClick={addQnaComponent}
                     >
                         <div><p>질문 답변</p></div>
+                    </li>
+                    <li 
+                        className='page-edit-body-li'
+                        onClick={addVotingComponent}
+                    >
+                        <div><p>투표</p></div>
                     </li>
                 </ul>
             </div>

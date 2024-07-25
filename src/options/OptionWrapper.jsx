@@ -4,6 +4,7 @@ import AudioOption from "./AudioOption";
 import VideoOption from "./VideoOption";
 import FileOption from "./FileOption";
 import QnaOption from "./QnaOption";
+import VotingOption from "./VotingOption";
 
 const optionMap = {
     text: TextOption,
@@ -12,6 +13,7 @@ const optionMap = {
     video: VideoOption,
     file: FileOption,
     qna: QnaOption,
+    voting: VotingOption
 };
 
 function OptionWrapper({

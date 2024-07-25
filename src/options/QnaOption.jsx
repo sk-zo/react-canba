@@ -37,18 +37,18 @@ function QnaOption({
 
     return (
         <div>
-          <label>
+          <div>
           Font Size:
           <input
             type="number"
             value={parseInt(component.style.fontSize)}
             onChange={handleFontSizeChange}
           />
-          </label>
-          <label>
+          </div>
+          <div>
             Color:
             <input type="color" value={component.style.color} onChange={handleColorChange} />
-          </label>
+          </div>
           <button onClick={addQuestion}>문항 추가</button>
           <button onClick={removeQuestion}>문항 제거</button>
 
