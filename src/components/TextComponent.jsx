@@ -12,6 +12,7 @@ function TextComponent({
   const textRef = useRef(null);
   const type = 'text';
 
+
   const handleChange = (e) => {
     updateComponent(id, { content: e.target.value });
   };
@@ -108,9 +109,9 @@ function TextComponent({
       onClick={handleClick}
     >
       <textarea
-        value={content}
+        placeholder={content}
         onChange={handleChange}
-        style={{ fontSize: style.fontSize, color: style.color }}
+        style={{ fontSize: style.fontSize, color: style.color, textAlign: style.textAlign, fontWeight: style.fontWeight }}
       />
       <div
         className="resize-handle bottom-right"

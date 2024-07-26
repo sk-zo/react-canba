@@ -1,16 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './PageEditMenu.css'
+import { AppContext } from './AppContext';
 
-function PageEditMenu({
-    addTextComponent,
-    addImageComponent,
-    addAudioComponent,
-    addVideoComponent,
-    addFileComponent,
-    addQnaComponent,
-    addVotingComponent,
-    changePageBackgroundImage
-}) {
+function PageEditMenu() {
+    const { setSessions, selectedSession, selectedPage, setSelectedComponent } = useContext(AppContext);
     const [isBackgroundUploadPopupOpen, setBackgroundUploadPoupOpen] = useState(false);
 
     const handleBackgroundUploaPopup = () => {
@@ -29,6 +22,164 @@ function PageEditMenu({
     const handleBackgroundUploadPopupCancel = () => {
         setBackgroundUploadPoupOpen(false);
     };
+
+    const changePageBackgroundImage = (imageUrl) => {
+        setSessions(prevSessions =>
+          prevSessions.map(session =>
+            session.id === selectedSession ?
+            {
+              ...session,
+              pages: session.pages.map(page =>
+                page.id === selectedPage ?
+                {
+                  ...page,
+                  backgroundImage: imageUrl,
+                } : page
+              ),
+            } : session
+          )
+        );
+      };
+
+
+      const addComponent = (newComponent) => {
+        setSessions(prevSessions => 
+            prevSessions.map(session =>
+                session.id === selectedSession ?
+                {
+                    ...session,
+                    pages: session.pages.map(page =>
+                        page.id === selectedPage ?
+                        {
+                            ...page,
+                            components: [...page.components, newComponent],
+                        } : page
+                    ),
+                } : session
+            )
+        );
+        setSelectedComponent(newComponent)
+      }
+    
+      const addTextComponent = () => {
+        const newComponent = {
+          id: Date.now(),
+          type: 'text',
+          content: 'Edit me',
+          style: {
+            fontSize: '16px',
+            fontWeight: 'normal',
+            color: '#000000',
+            textAlign: 'left',
+            top: 100,
+            left: 100,
+            width: '200px',
+            height: '50px',
+          },
+        };
+        addComponent(newComponent);
+      };
+    
+      const addImageComponent = () => {
+        const newComponent = {
+          id: Date.now(),
+          type: 'image',
+          src: 'none',
+          style: {
+            top: 100,
+            left: 100,
+            width: '200px',
+            height: '50px',
+          }
+        };
+    
+        addComponent(newComponent);
+      };
+    
+      const addAudioComponent = () => {
+        const newComponent = {
+          id: Date.now(),
+          type: 'audio',
+          src: 'none',
+          style: {
+            top: 100,
+            left: 100,
+            width: '300px',
+            height: '50px'
+          }
+        };
+    
+        addComponent(newComponent);
+      }
+    
+      const addVideoComponent = () => {
+        const newComponent = {
+          id: Date.now(),
+          type: 'video',
+          src: 'none',
+          style: {
+            top: 100,
+            left: 100,
+            width: '400px',
+            height: '200px'
+          }
+        };
+    
+        addComponent(newComponent);
+      }
+    
+      const addFileComponent = () => {
+        const newComponent = {
+          id: Date.now(),
+          type: "file",
+          src: "",
+          style: {
+            top: 100,
+            left: 100,
+            width: '200px',
+            height: '50px'
+          }
+        };
+    
+        addComponent(newComponent);
+      }
+    
+      const addQnaComponent = () => {
+        const newComponent = {
+          id: Date.now(),
+          type: 'qna',
+          questions: ['질문을 입력하세요'],
+          style: {
+            fontSize: '16px',
+            color: '#000000',
+            backgroundColor: 'transparent',
+            top: 100,
+            left: 100,
+            width: '400px',
+            height: 'min-content',
+          },
+        };
+    
+        addComponent(newComponent);
+      };
+    
+      const addVotingComponent = () => {
+        const newComponent = {
+          id: Date.now(),
+          type: 'voting',
+          items: [{content: '내용을 입력해주세요.', isSelected: false}],
+          style: {
+            fontSize: '16px',
+            color: '#000000',
+            top: 100,
+            left: 100,
+            width: '400px',
+            height: 'min-content',
+          },
+        };
+    
+        addComponent(newComponent);
+      }
 
 
     return (

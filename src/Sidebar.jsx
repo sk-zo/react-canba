@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import DraggableSession from './DraggableSession';
 import './Sidebar.css';
+import { AppContext } from './AppContext';
 
 
-function Sidebar({ 
-  sessions, 
-  setSessions,
-  selectedSession, 
-  setSelectedSession,
-  setSelectedPage,
-  setSelectedComponent,
-}) {
+function Sidebar() {
+  const { 
+    sessions, 
+    setSessions,
+    setSelectedSession,
+    setSelectedPage,
+  } = useContext(AppContext);
   const [isSessionPopupOpen, setIsSessionPopupOpen] = useState(false);
   const [addSessionName, setAddSessionName] = useState('');
   const [sessionMenuOpen, setSessionMenuOpen] = useState(null);
@@ -70,14 +70,8 @@ function Sidebar({
             {sessions.map((session, index) => (
               <DraggableSession
                 key={session.id}
-                sessions={sessions}
                 session={session}
-                selectedSession={selectedSession}
                 index={index}
-                setSessions={setSessions}
-                setSelectedSession={setSelectedSession}
-                setSelectedPage={setSelectedPage}
-                setSelectedComponent={setSelectedComponent}
                 isSessionMenuOpen={sessionMenuOpen === session.id}
                 setSessionMenuOpen={setSessionMenuOpen}
               />

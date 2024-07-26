@@ -1,22 +1,19 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+import { AppContext } from './AppContext';
 
 const ItemType = {
     SESSION: 'session',
   };
   
 function DraggableSession({ 
-    sessions,
     session, 
     index, 
-    selectedSession,
-    setSessions,
-    setSelectedSession,
-    setSelectedPage,
-    setSelectedComponent,
     isSessionMenuOpen,
     setSessionMenuOpen
     }) {
+    const { sessions, setSessions, selectedSession, setSelectedSession, 
+        setSelectedPage, setSelectedComponent} = useContext(AppContext);
     const ref = React.useRef(null);
 
     const handleSetSelectedSession = (sessionId) => {
