@@ -40,6 +40,26 @@ function PageEditMenu() {
           )
         );
       };
+
+
+      const addComponent = (newComponent) => {
+        setSessions(prevSessions => 
+            prevSessions.map(session =>
+                session.id === selectedSession ?
+                {
+                    ...session,
+                    pages: session.pages.map(page =>
+                        page.id === selectedPage ?
+                        {
+                            ...page,
+                            components: [...page.components, newComponent],
+                        } : page
+                    ),
+                } : session
+            )
+        );
+        setSelectedComponent(newComponent)
+      }
     
       const addTextComponent = () => {
         const newComponent = {
@@ -57,23 +77,7 @@ function PageEditMenu() {
             height: '50px',
           },
         };
-    
-        setSessions(prevSessions =>
-          prevSessions.map(session =>
-            session.id === selectedSession ?
-            {
-              ...session,
-              pages: session.pages.map(page =>
-                page.id === selectedPage ?
-                {
-                  ...page,
-                  components: [...page.components, newComponent],
-                } : page
-              ),
-            } : session
-          )
-        );
-        setSelectedComponent(newComponent);
+        addComponent(newComponent);
       };
     
       const addImageComponent = () => {
@@ -89,22 +93,7 @@ function PageEditMenu() {
           }
         };
     
-        setSessions(prevSessions =>
-          prevSessions.map(session =>
-            session.id === selectedSession ?
-            {
-              ...session,
-              pages: session.pages.map(page =>
-                page.id === selectedPage ?
-                {
-                  ...page,
-                  components: [...page.components, newComponent],
-                } : page
-              ),
-            } : session
-          )
-        );
-        setSelectedComponent(newComponent);
+        addComponent(newComponent);
       };
     
       const addAudioComponent = () => {
@@ -120,22 +109,7 @@ function PageEditMenu() {
           }
         };
     
-        setSessions(prevSessions =>
-          prevSessions.map(session =>
-            session.id === selectedSession ?
-            {
-              ...session,
-              pages: session.pages.map(page =>
-                page.id === selectedPage
-                ? {
-                  ...page,
-                  components: [...page.components, newComponent],
-                } : page
-              ),
-            } : session
-          )
-        );
-        setSelectedComponent(newComponent)
+        addComponent(newComponent);
       }
     
       const addVideoComponent = () => {
@@ -151,22 +125,7 @@ function PageEditMenu() {
           }
         };
     
-        setSessions(prevSessions =>
-          prevSessions.map(session =>
-            session.id === selectedSession ?
-            {
-              ...session,
-              pages: session.pages.map(page =>
-                page.id === selectedPage ?
-                {
-                  ...page,
-                  components: [...page.components, newComponent],
-                } : page
-              ),
-            } : session
-          )
-        );
-        setSelectedComponent(newComponent);
+        addComponent(newComponent);
       }
     
       const addFileComponent = () => {
@@ -182,22 +141,7 @@ function PageEditMenu() {
           }
         };
     
-        setSessions(prevSessions =>
-          prevSessions.map(session =>
-            session.id === selectedSession ?
-            {
-              ...session,
-              pages: session.pages.map(page =>
-                page.id === selectedPage ?
-                {
-                  ...page,
-                  components: [...page.components, newComponent],
-                } : page
-              ),
-            } : session
-          )
-        );
-        setSelectedComponent(newComponent);
+        addComponent(newComponent);
       }
     
       const addQnaComponent = () => {
@@ -212,26 +156,11 @@ function PageEditMenu() {
             top: 100,
             left: 100,
             width: '400px',
-            height: '200px',
+            height: 'min-content',
           },
         };
     
-        setSessions(prevSessions =>
-          prevSessions.map(session =>
-            session.id === selectedSession ?
-            {
-              ...session,
-              pages: session.pages.map(page =>
-                page.id === selectedPage ?
-                {
-                  ...page,
-                  components: [...page.components, newComponent],
-                } : page
-              ),
-            } : session
-          )
-        );
-        setSelectedComponent(newComponent);
+        addComponent(newComponent);
       };
     
       const addVotingComponent = () => {
@@ -249,22 +178,7 @@ function PageEditMenu() {
           },
         };
     
-        setSessions(prevSessions =>
-          prevSessions.map(session =>
-            session.id === selectedSession ?
-            {
-              ...session,
-              pages: session.pages.map(page =>
-                page.id === selectedPage ?
-                {
-                  ...page,
-                  components: [...page.components, newComponent],
-                } : page
-              ),
-            } : session
-          )
-        );
-        setSelectedComponent(newComponent);
+        addComponent(newComponent);
       }
 
 
