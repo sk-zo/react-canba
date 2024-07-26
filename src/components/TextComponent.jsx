@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './TextComponent.css';
 
 function TextComponent({ 
@@ -10,7 +10,12 @@ function TextComponent({
   contentPageRef 
 }) {
   const textRef = useRef(null);
+  const textareaRef = useRef();
   const type = 'text';
+
+  useEffect(() => {
+    textareaRef.current.focus();
+  })
 
   const handleChange = (e) => {
     updateComponent(id, { content: e.target.value });
@@ -108,9 +113,10 @@ function TextComponent({
       onClick={handleClick}
     >
       <textarea
-        value={content}
+        ref={textareaRef}
+        placeholder={content}
         onChange={handleChange}
-        style={{ fontSize: style.fontSize, color: style.color }}
+        style={{ fontSize: style.fontSize, color: style.color, textAlign: style.textAlign, fontWeight: style.fontWeight }}
       />
       <div
         className="resize-handle bottom-right"

@@ -43,10 +43,6 @@ function ContentMain({
   }, []);
 
 
-  useEffect(() => {
-    console.log("ContentMain selectedPage:", selectedPage);
-  }, [selectedPage]);
-
   const addPage = (pageName) => {
     const session = sessions.find((session) => session.id === selectedSession);
     const newPage = {
@@ -112,7 +108,9 @@ function ContentMain({
       content: 'Edit me',
       style: {
         fontSize: '16px',
+        fontWeight: 'normal',
         color: '#000000',
+        textAlign: 'left',
         top: 100,
         left: 100,
         width: '200px',

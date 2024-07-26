@@ -28,9 +28,6 @@ function App() {
     console.log('selectedPage updated:', selectedPage);
   }, [selectedPage]);
 
-
-  
-
   
   return (
     <div className="app">
