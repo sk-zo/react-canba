@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import PageEditMenu from './PageEditMenu';
@@ -6,17 +6,12 @@ import ComponentOption from './ComponentOption';
 import DraggablePage from './DraggablePage';
 import ComponentWrapper from './components/ComponentWrapper';
 import './ContentMain.css';
+import { AppContext } from './AppContext';
 
 
-function ContentMain({ 
-  sessions, 
-  selectedSession, 
-  selectedPage,
-  selectedComponent,
-  setSessions,
-  setSelectedPage, 
-  setSelectedComponent,
- }) {
+function ContentMain() {
+  const { sessions, setSessions, selectedSession, selectedPage, setSelectedPage,
+    selectedComponent, setSelectedComponent, } = useContext(AppContext);
   const [isPagePopupOpen, setIsPagePopupOpen] = useState(false);
   const [pageName, setPageName] = useState('');
   const [pageMenuOpen, setPageMenuOpen] = useState(null);
@@ -83,249 +78,7 @@ function ContentMain({
     setIsPagePopupOpen(false);
   };
 
-  const changePageBackgroundImage = (imageUrl) => {
-    setSessions(prevSessions =>
-      prevSessions.map(session =>
-        session.id === selectedSession ?
-        {
-          ...session,
-          pages: session.pages.map(page =>
-            page.id === selectedPage ?
-            {
-              ...page,
-              backgroundImage: imageUrl,
-            } : page
-          ),
-        } : session
-      )
-    );
-  };
-
-  const addTextComponent = () => {
-    const newComponent = {
-      id: Date.now(),
-      type: 'text',
-      content: 'Edit me',
-      style: {
-        fontSize: '16px',
-        fontWeight: 'normal',
-        color: '#000000',
-        textAlign: 'left',
-        top: 100,
-        left: 100,
-        width: '200px',
-        height: '50px',
-      },
-    };
-
-    setSessions(prevSessions =>
-      prevSessions.map(session =>
-        session.id === selectedSession ?
-        {
-          ...session,
-          pages: session.pages.map(page =>
-            page.id === selectedPage ?
-            {
-              ...page,
-              components: [...page.components, newComponent],
-            } : page
-          ),
-        } : session
-      )
-    );
-    setSelectedComponent(newComponent);
-  };
-
-  const addImageComponent = () => {
-    const newComponent = {
-      id: Date.now(),
-      type: 'image',
-      src: 'none',
-      style: {
-        top: 100,
-        left: 100,
-        width: '200px',
-        height: '50px',
-      }
-    };
-
-    setSessions(prevSessions =>
-      prevSessions.map(session =>
-        session.id === selectedSession ?
-        {
-          ...session,
-          pages: session.pages.map(page =>
-            page.id === selectedPage ?
-            {
-              ...page,
-              components: [...page.components, newComponent],
-            } : page
-          ),
-        } : session
-      )
-    );
-    setSelectedComponent(newComponent);
-  };
-
-  const addAudioComponent = () => {
-    const newComponent = {
-      id: Date.now(),
-      type: 'audio',
-      src: 'none',
-      style: {
-        top: 100,
-        left: 100,
-        width: '300px',
-        height: '50px'
-      }
-    };
-
-    setSessions(prevSessions =>
-      prevSessions.map(session =>
-        session.id === selectedSession ?
-        {
-          ...session,
-          pages: session.pages.map(page =>
-            page.id === selectedPage
-            ? {
-              ...page,
-              components: [...page.components, newComponent],
-            } : page
-          ),
-        } : session
-      )
-    );
-    setSelectedComponent(newComponent)
-  }
-
-  const addVideoComponent = () => {
-    const newComponent = {
-      id: Date.now(),
-      type: 'video',
-      src: 'none',
-      style: {
-        top: 100,
-        left: 100,
-        width: '400px',
-        height: '200px'
-      }
-    };
-
-    setSessions(prevSessions =>
-      prevSessions.map(session =>
-        session.id === selectedSession ?
-        {
-          ...session,
-          pages: session.pages.map(page =>
-            page.id === selectedPage ?
-            {
-              ...page,
-              components: [...page.components, newComponent],
-            } : page
-          ),
-        } : session
-      )
-    );
-    setSelectedComponent(newComponent);
-  }
-
-  const addFileComponent = () => {
-    const newComponent = {
-      id: Date.now(),
-      type: "file",
-      src: "",
-      style: {
-        top: 100,
-        left: 100,
-        width: '200px',
-        height: '50px'
-      }
-    };
-
-    setSessions(prevSessions =>
-      prevSessions.map(session =>
-        session.id === selectedSession ?
-        {
-          ...session,
-          pages: session.pages.map(page =>
-            page.id === selectedPage ?
-            {
-              ...page,
-              components: [...page.components, newComponent],
-            } : page
-          ),
-        } : session
-      )
-    );
-    setSelectedComponent(newComponent);
-  }
-
-  const addQnaComponent = () => {
-    const newComponent = {
-      id: Date.now(),
-      type: 'qna',
-      questions: ['질문을 입력하세요'],
-      style: {
-        fontSize: '16px',
-        color: '#000000',
-        backgroundColor: 'transparent',
-        top: 100,
-        left: 100,
-        width: '400px',
-        height: '200px',
-      },
-    };
-
-    setSessions(prevSessions =>
-      prevSessions.map(session =>
-        session.id === selectedSession ?
-        {
-          ...session,
-          pages: session.pages.map(page =>
-            page.id === selectedPage ?
-            {
-              ...page,
-              components: [...page.components, newComponent],
-            } : page
-          ),
-        } : session
-      )
-    );
-    setSelectedComponent(newComponent);
-  };
-
-  const addVotingComponent = () => {
-    const newComponent = {
-      id: Date.now(),
-      type: 'voting',
-      items: [{content: '내용을 입력해주세요.', isSelected: false}],
-      style: {
-        fontSize: '16px',
-        color: '#000000',
-        top: 100,
-        left: 100,
-        width: '400px',
-        height: 'min-content',
-      },
-    };
-
-    setSessions(prevSessions =>
-      prevSessions.map(session =>
-        session.id === selectedSession ?
-        {
-          ...session,
-          pages: session.pages.map(page =>
-            page.id === selectedPage ?
-            {
-              ...page,
-              components: [...page.components, newComponent],
-            } : page
-          ),
-        } : session
-      )
-    );
-    setSelectedComponent(newComponent);
-  }
+  
 
   const updateComponent = (componentId, newProperties) => {
     setSessions(prevSessions =>
@@ -378,15 +131,9 @@ function ContentMain({
                   pages.map((page, index) => (
                     <DraggablePage
                       key={page.id}
-                      sessions={sessions}
                       session={session}
                       page={page}
                       index={index}
-                      setSessions={setSessions}
-                      selectedSession={selectedSession}
-                      selectedPage={selectedPage}
-                      setSelectedPage={setSelectedPage}
-                      setSelectedComponent={setSelectedComponent}
                       isPageMenuOpen={pageMenuOpen === page.id}
                       setPageMenuOpen={setPageMenuOpen}
                     />
@@ -427,16 +174,7 @@ function ContentMain({
           
         )}
         {page && !selectedComponent && (
-          <PageEditMenu
-            addTextComponent={addTextComponent}
-            addImageComponent={addImageComponent}
-            addAudioComponent={addAudioComponent}
-            addVideoComponent={addVideoComponent}
-            addFileComponent={addFileComponent}
-            addQnaComponent={addQnaComponent}
-            addVotingComponent={addVotingComponent}
-            changePageBackgroundImage={changePageBackgroundImage}
-          />
+          <PageEditMenu/>
         )}
         {selectedComponent && (
           <ComponentOption
@@ -447,8 +185,6 @@ function ContentMain({
         )}
       </div>
 
-      
-      
       {isPagePopupOpen && (
       <div className='page-popup'>
         <div className='page-popup-content'>

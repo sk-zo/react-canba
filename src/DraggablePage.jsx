@@ -1,24 +1,20 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+import { AppContext } from './AppContext';
 
 const ItemType = {
     PAGE: 'page',
   };
   
 function DraggablePage({ 
-    sessions,
     session,
     page, 
     index, 
-    setSessions,
-    selectedSession,
-    selectedPage, 
-    setSelectedPage,
-    setSelectedComponent,
     isPageMenuOpen,
     setPageMenuOpen
   }) {
-
+    const { sessions, setSessions, selectedSession, 
+      selectedPage, setSelectedPage, setSelectedComponent } = useContext(AppContext);
     
     const ref = React.useRef(null);
     const [, drop] = useDrop({

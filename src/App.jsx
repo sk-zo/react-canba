@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import ContentMain from './ContentMain';
+import { AppContext } from './AppContext';
 import './App.css';
 
 function App() {
@@ -33,24 +34,15 @@ function App() {
     <div className="app">
       <Header/>
       <div className='main-container'>
-        <Sidebar 
-          sessions={sessions}
-          setSessions={setSessions}
-          selectedSession={selectedSession}
-          setSelectedSession={setSelectedSession}
-          setSelectedPage={setSelectedPage}
-          setSelectedComponent={setSelectedComponent}
-        />
-        <ContentMain
-          sessions={sessions}
-          selectedSession={selectedSession}
-          selectedPage={selectedPage}
-          selectedComponent={selectedComponent}
-          setSessions={setSessions}
-          setSelectedSession={setSelectedSession}
-          setSelectedPage={setSelectedPage}
-          setSelectedComponent={setSelectedComponent}
-        />
+        <AppContext.Provider value={{
+          sessions, setSessions,
+          selectedSession, setSelectedSession,
+          selectedPage, setSelectedPage,
+          selectedComponent, setSelectedComponent,
+        }}>
+          <Sidebar/>
+          <ContentMain/>
+        </AppContext.Provider>
       </div>
     </div>
   );
