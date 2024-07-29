@@ -13,6 +13,7 @@ function Sidebar() {
     setSelectedSession,
     setSelectedPage,
   } = useContext(AppContext);
+  const [thumbnail, setThumbnail] = useState(null);
   const [isSessionPopupOpen, setIsSessionPopupOpen] = useState(false);
   const [addSessionName, setAddSessionName] = useState('');
   const [sessionMenuOpen, setSessionMenuOpen] = useState(null);
@@ -29,7 +30,14 @@ function Sidebar() {
     return () => {
       document.removeEventListener('mousedown', handleClickNoneSessionMenu);
     }
-  })
+  });
+
+  const handleThumbnailUpload = (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      setThumbnail(URL.createObjectURL(file));
+    }
+  }
 
   const addSession = (sessionName) => {
     const newSession = {
@@ -63,20 +71,38 @@ function Sidebar() {
   
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div className="sidebar">
+    <div className="sidebar">
+      <div className='thumbnail-box'>
+        <input
+          id='thumbnail-input' 
+          type="file" 
+          accept='image/*'
+          onChange={handleThumbnailUpload}
+          style={{display: 'none'}}
+        />
+        <label htmlFor='thumbnail-input' onClick={handleThumbnailUpload}>
+          <img className='thumbnail-img' src={thumbnail} alt="" />
+        </label>
+        
+      </div>
+      <DndProvider backend={HTML5Backend}>
         <div className='session-box'>
-          <ul className='session-box-ul'>
-            {sessions.map((session, index) => (
-              <DraggableSession
-                key={session.id}
-                session={session}
-                index={index}
-                isSessionMenuOpen={sessionMenuOpen === session.id}
-                setSessionMenuOpen={setSessionMenuOpen}
-              />
-            ))}
-          </ul>
+        {sessions.length === 0 ? ( 
+          <p>세션을 등록해주세요</p>
+          ) : (
+            <ul className='session-box-ul'>
+              
+              {sessions.map((session, index) => (
+                <DraggableSession
+                  key={session.id}
+                  session={session}
+                  index={index}
+                  isSessionMenuOpen={sessionMenuOpen === session.id}
+                  setSessionMenuOpen={setSessionMenuOpen}
+                />
+              ))}
+            </ul>
+          )}
         </div>
         <button onClick={handleAddSession}>Add Session</button>
         {isSessionPopupOpen && (
@@ -100,8 +126,9 @@ function Sidebar() {
             </div>
           </div>
         )}
-      </div>
-    </DndProvider>
+      </DndProvider>
+    </div>
+
   );
 }
 

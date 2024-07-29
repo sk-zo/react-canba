@@ -82,7 +82,7 @@ function VotingOption({component, updateComponent}) {
                     <div>
                         <input 
                             type="text" 
-                            value={item.content}
+                            placeholder={item.content}
                             onChange={(e) => handleItemContentChange(e, index)}
                         />
                     </div>

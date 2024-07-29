@@ -4,6 +4,19 @@
     padding: 10px;
 }
 
+.thumbnail-box {
+    padding: 5px;
+    background-color: white;
+    border-radius: 20px;
+}
+
+.thumbnail-img {
+    width: 100%;
+    min-height: 150px;
+    border-radius: 20px;
+}
+
+
 .session-box-ul {
     list-style: none;
     width: 180px;
@@ -100,3 +113,4 @@
     display: flex;
     justify-content: space-evenly;
 }
+
