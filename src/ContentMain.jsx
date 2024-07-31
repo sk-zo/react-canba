@@ -10,15 +10,16 @@ import { AppContext } from './AppContext';
 
 
 function ContentMain() {
-  const { sessions, setSessions, selectedSession, selectedPage, setSelectedPage,
-    selectedComponent, setSelectedComponent, } = useContext(AppContext);
+  const { content, setContent, 
+    selectedSession, selectedPage, setSelectedPage,
+    selectedComponent, setSelectedComponent, isLoading} = useContext(AppContext);
   const [isPagePopupOpen, setIsPagePopupOpen] = useState(false);
   const [pageName, setPageName] = useState('');
   const [pageMenuOpen, setPageMenuOpen] = useState(null);
   const contentPageRef = useRef(null);
-  const session = sessions.find((session) => session.id === selectedSession);
-  const pages = session ? session.pages : [];
-  const page = pages.find(page => page.id === selectedPage);
+  const session = content ? content.sessions.find((session) => session.id === selectedSession) : null;
+  const pages = session ? session.pages : null;
+  const page = pages ? pages.find(page => page.id === selectedPage) : null;
   const components = page ? page.components : [];
   const component = selectedComponent ? components.find(component => component.id === selectedComponent.id) : null;
   const backgroundImage = page?.backgroundImage || '';
@@ -39,7 +40,36 @@ function ContentMain() {
 
 
   const addPage = (pageName) => {
-    const session = sessions.find((session) => session.id === selectedSession);
+    if (pageName.trim()) {
+      const formData = new FormData();
+      formData.append("sessionId", selectedSession);
+      formData.append("pageName", pageName);
+
+      fetch('http://localhost:8080/api/add-content-page', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("response not ok: add content page");
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log("updated content after addPage: ", data);
+        setContent(data);
+        const tmpPages = data.sessions.find(session => session.id === selectedSession).pages;
+        setSelectedPage(tmpPages[tmpPages.length-1].id);
+      })
+      .catch(error => {
+        console.error('error add content page', error);
+      })
+    };
+
+    const session = content ? content.sessions.find((session) => session.id === selectedSession) : null;
+    if (session === null) {
+      return;
+    }
     const newPage = {
       id: Date.now(),
       name: pageName,
@@ -48,15 +78,16 @@ function ContentMain() {
       backgroundImage: ''
     };
 
-    setSessions(prevSessions =>
-      prevSessions.map(session =>
+    setContent(prevContent => ({
+      ...prevContent,
+      sessions: prevContent.sessions.map(session =>
         session.id === selectedSession ?
         {
           ...session,
           pages: [...session.pages, newPage],
         } : session
       )
-    );
+    }));
 
     setSelectedPage(newPage.id);
   }
@@ -81,8 +112,9 @@ function ContentMain() {
   
 
   const updateComponent = (componentId, newProperties) => {
-    setSessions(prevSessions =>
-      prevSessions.map(session =>
+    setContent(prevContent => ({
+      ...prevContent,
+      sessions: prevContent.sessions.map(session => 
         session.id === selectedSession ?
         {
           ...session,
@@ -95,29 +127,35 @@ function ContentMain() {
                 { ...component, ...newProperties } : component
               ),
             } : page
-          ),
+          ), 
         } : session
       )
-    );
+    }));
   };
 
   const deleteComponent = (componentId) => {
-    setSessions(prevSessions =>
-      prevSessions.map(session => 
-        session.id === selectedSession ?
-        {
-          ...session,
-          pages: session.pages.map(page =>
-            page.id === selectedPage ?
-            {
-              ...page,
-              components: page.components.filter((component) => component.id !== componentId)
-            } : page
-          ),
-        } : session
-      )
+    setContent(prevContent => ({
+      ...prevContent,
+      sessions: prevContent.sessions.map(session => 
+          session.id === selectedSession ?
+          {
+            ...session,
+            pages: session.pages.map(page =>
+              page.id === selectedPage ?
+              {
+                ...page,
+                components: page.components.filter((component) => component.id !== componentId)
+              } : page
+            ), 
+          } : session
+        )
+      })
     );
     setSelectedComponent(null);
+  }
+
+  if (isLoading || !content) {
+    return <div>Loading...</div>;
   }
 
   return (
@@ -127,7 +165,7 @@ function ContentMain() {
         <div className='content-header'>
           <div className='page-box'>
             <ul className='page-box-ul'>
-              {session != null && pages.length > 0 ? (
+              {pages != null && pages.length > 0 ? (
                   pages.map((page, index) => (
                     <DraggablePage
                       key={page.id}
