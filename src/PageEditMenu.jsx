@@ -2,9 +2,38 @@ import React, { useContext, useState } from 'react';
 import './PageEditMenu.css'
 import { AppContext } from './AppContext';
 
-function PageEditMenu() {
+function PageEditMenu({content}) {
   const { setContent, selectedSession, selectedPage, setSelectedComponent } = useContext(AppContext);
   const [isBackgroundUploadPopupOpen, setBackgroundUploadPoupOpen] = useState(false);
+
+  const handleSavePageComponents = () => {
+    const components = content.sessions
+        .find(session => session.id === selectedSession)
+        .pages
+        .find(page => page.id === selectedPage)
+        .components;
+
+    console.log(components);
+    fetch(`http://localhost:8080/api/save-content-component/${content.id}/${selectedPage}`, {
+      method: 'POST',
+        headers: {
+            'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify(components) 
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("response not ok: save content component");
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("updated content after save component: ", data);
+    })
+    .catch(error => {
+        console.error('error save content component', error);
+    });
+  };
 
   const handleBackgroundUploaPopup = () => {
       setBackgroundUploadPoupOpen(true);
@@ -170,7 +199,7 @@ function PageEditMenu() {
     const newComponent = {
       id: Date.now(),
       type: 'voting',
-      items: [{content: '내용을 입력해주세요.', isSelected: false}],
+      items: ['내용을 입력하세요.'],
       style: {
         fontSize: '16px',
         color: '#000000',
@@ -193,7 +222,7 @@ return (
                     <div onClick={handleBackgroundUploaPopup}><p>배경</p></div>
                 </li>
                 <li className='page-edit-head-li'>
-                    <div><p>저장</p></div>
+                    <div><p onClick={handleSavePageComponents}>저장</p></div>
                 </li>
             </ul>
         </div>

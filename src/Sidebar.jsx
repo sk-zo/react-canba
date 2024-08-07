@@ -83,7 +83,27 @@ function Sidebar() {
   const handleThumbnailUpload = (e) => {
     const file = e.target.files && e.target.files[0];
     if (file) {
-      
+      const formData = new FormData();
+      formData.append('contentId', content.id);
+      formData.append('file', file);
+
+      fetch('http://localhost:8080/api/content/thumbnail-upload', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("response not ok: upload content thumbnail");
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        setContent(data);
+      })
+      .catch(error => {
+        console.error('error upload content thumbanil', error);
+      })
     }
   }
 
@@ -138,7 +158,7 @@ function Sidebar() {
           style={{display: 'none'}}
         />
         <label htmlFor='thumbnail-input' onClick={handleThumbnailUpload}>
-          <img className='thumbnail-img' src={content.thumbnail} alt="" />
+          <img className='thumbnail-img' src={`http://localhost:8080/${content.thumbnail}`} alt="" />
         </label>
       </div>
       <div className='content-name-box'>

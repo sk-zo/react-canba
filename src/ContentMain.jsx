@@ -212,7 +212,7 @@ function ContentMain() {
           
         )}
         {page && !selectedComponent && (
-          <PageEditMenu/>
+          <PageEditMenu content={content}/>
         )}
         {selectedComponent && (
           <ComponentOption
