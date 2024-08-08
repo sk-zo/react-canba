@@ -72,32 +72,23 @@ function DraggablePage({
     };
     
     const copyPage = (sessionId, pageId) => {
-      const sessionToUpdate = content.sessions.find(session => session.id === sessionId);
-      if (!sessionToUpdate) return ;
-  
-      const pageToCopy = sessionToUpdate.pages.find(page => page.id === pageId);
-  
-      const copiedPage = {
-        ...pageToCopy,
-        id: Date.now() + Math.random(),
-        name: `${pageToCopy.name} (Copy)`,
-        order: sessionToUpdate.pages.length,
-        components: pageToCopy.components.map(component => ({
-          ...component,
-          id: Date.now() + Math.random(),
-        })),
-      };
+      const formData = new FormData();
+      formData.append("sessionId", sessionId);
+      formData.append("pageId", pageId);
 
-      setContent(prevContent => ({
-        ...prevContent,
-        sessions: prevContent.sessions.map(session => 
-          session.id === sessionId ?
-          {
-            ...session,
-            pages: [...session.pages, copiedPage]
-          } : session
-        )
-      }));
+      fetch('http://localhost:8080/api/copy-content-page', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("response not ok: copy content page");
+        }
+        return response.json();
+      })
+      .then(data => {
+        setContent(data);
+      })
     }
   
     const deletePage = (pageId) => {

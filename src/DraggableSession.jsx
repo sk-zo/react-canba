@@ -53,31 +53,22 @@ function DraggableSession({
     };
     
     const copySession = (sessionId) => {
-        const sessionToCopy = content.sessions.find(session => session.id === sessionId);
-        if (!sessionToCopy) return;
+        const formData = new FormData();
+        formData.append("sessionId", sessionId);
 
-        const copiedPages = sessionToCopy.pages.map(page => ({
-            ...page,
-            id: Date.now() + Math.random(),
-            components: page.components.map(component => ({
-            ...component,
-            id: Date.now() + Math.random(),
-            }))
-        }));
-
-        const copiedSession = {
-            ...sessionToCopy,
-            id: Date.now(),
-            name: `${sessionToCopy.name} (Copy)`,
-            order: content.sessions.length,
-            pages: copiedPages
-        };
-
-        setContent(prevContent => ({
-            ...prevContent,
-            sessions: [...prevContent.sessions, copiedSession]
-        }));
-
+        fetch('http://localhost:8080/api/copy-content-session', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("response not ok: copy content session");
+            }
+            return response.json();
+        })
+        .then(data => {
+            setContent(data);
+        })
     };
 
     const deleteSession = (sessionId) => {
@@ -211,7 +202,6 @@ function DraggableSession({
     const handleDeleteSessionCancel = () => {
         setIsDeleteSessionMenuOpen(false);
     };
-
 
 
     return (

@@ -199,7 +199,7 @@ function PageEditMenu({content}) {
     const newComponent = {
       id: Date.now(),
       type: 'voting',
-      items: ['내용을 입력하세요.'],
+      items: [{content: '내용을 입력해주세요.', isSelected: false}],
       style: {
         fontSize: '16px',
         color: '#000000',
