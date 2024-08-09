@@ -5,7 +5,7 @@ function AudioOption({component, updateComponent}) {
         const file = e.target.files && e.target.files[0];
         if (file) {
             const audioUrl = URL.createObjectURL(file);
-            updateComponent(component.id, { src: audioUrl });
+            updateComponent(component.id, { src: audioUrl, file: file });
         }
     };
 

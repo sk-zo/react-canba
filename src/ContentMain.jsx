@@ -133,26 +133,7 @@ function ContentMain() {
     }));
   };
 
-  const deleteComponent = (componentId) => {
-    setContent(prevContent => ({
-      ...prevContent,
-      sessions: prevContent.sessions.map(session => 
-          session.id === selectedSession ?
-          {
-            ...session,
-            pages: session.pages.map(page =>
-              page.id === selectedPage ?
-              {
-                ...page,
-                components: page.components.filter((component) => component.id !== componentId)
-              } : page
-            ), 
-          } : session
-        )
-      })
-    );
-    setSelectedComponent(null);
-  }
+  
 
   if (isLoading || !content) {
     return <div>Loading...</div>;
@@ -218,7 +199,6 @@ function ContentMain() {
           <ComponentOption
             component={component}
             updateComponent={updateComponent}
-            deleteComponent={deleteComponent}
           />
         )}
       </div>

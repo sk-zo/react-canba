@@ -5,6 +5,7 @@ import { AppContext } from './AppContext';
 function PageEditMenu({content}) {
   const { setContent, selectedSession, selectedPage, setSelectedComponent } = useContext(AppContext);
   const [isBackgroundUploadPopupOpen, setBackgroundUploadPoupOpen] = useState(false);
+  const [pageBackgroundImage, setPageBackgroundImage] = useState(null);
 
   const handleSavePageComponents = () => {
     const components = content.sessions
@@ -13,13 +14,33 @@ function PageEditMenu({content}) {
         .find(page => page.id === selectedPage)
         .components;
 
-    console.log(components);
+    const formData = new FormData();
+
+    const componentsWithoutFile = components.map(component => {
+      const componentCopy = { ...component};
+      delete componentCopy.file;
+      return componentCopy;
+    });
+
+    formData.append('components', new Blob([JSON.stringify(componentsWithoutFile)], { type: 'application/json'}));
+
+    components.forEach((component) => {
+      if (component.file) {
+        formData.append(`${component.id}`, component.file);
+      }
+    });
+
+    if (pageBackgroundImage) {
+      formData.append('backgroundImage', pageBackgroundImage);
+    }
+
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+    
     fetch(`http://localhost:8080/api/save-content-component/${content.id}/${selectedPage}`, {
       method: 'POST',
-        headers: {
-            'Content-Type': 'application/json' 
-        },
-        body: JSON.stringify(components) 
+      body: formData
     })
     .then(response => {
         if (!response.ok) {
@@ -28,6 +49,7 @@ function PageEditMenu({content}) {
         return response.json();
     })
     .then(data => {
+        setContent(data);
         console.log("updated content after save component: ", data);
     })
     .catch(error => {
@@ -45,6 +67,7 @@ function PageEditMenu({content}) {
           const imageUrl = URL.createObjectURL(file);
           changePageBackgroundImage(imageUrl);
           setBackgroundUploadPoupOpen(false);
+          setPageBackgroundImage(file);
       }
   };
 
@@ -117,6 +140,7 @@ function PageEditMenu({content}) {
       id: Date.now(),
       type: 'image',
       src: 'none',
+      file: null,
       style: {
         top: 100,
         left: 100,
@@ -133,6 +157,7 @@ function PageEditMenu({content}) {
       id: Date.now(),
       type: 'audio',
       src: 'none',
+      file: null,
       style: {
         top: 100,
         left: 100,
@@ -149,6 +174,7 @@ function PageEditMenu({content}) {
       id: Date.now(),
       type: 'video',
       src: 'none',
+      file: null,
       style: {
         top: 100,
         left: 100,
@@ -164,7 +190,7 @@ function PageEditMenu({content}) {
     const newComponent = {
       id: Date.now(),
       type: "file",
-      src: "",
+      file: null,
       style: {
         top: 100,
         left: 100,

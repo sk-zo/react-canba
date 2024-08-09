@@ -38,10 +38,10 @@ function ComponentWrapper({
 
   const specificProps = {
     text: { content: component.content, style: component.style },
-    image: { src: component.src, style: component.style },
-    audio: { src: component.src, style: component.style },
-    video: { src: component.src, style: component.style },
-    file: { src: component.src, style: component.style },
+    image: { src: component.src, file: component.file, style: component.style },
+    audio: { src: component.src, file: component.file, style: component.style },
+    video: { src: component.src, file: component.file, style: component.style },
+    file: { src: component.src, file: component.file, style: component.style },
     qna: { questions: component.questions, style: component.style },
     voting: { items: component.items, style: component.style }
   }

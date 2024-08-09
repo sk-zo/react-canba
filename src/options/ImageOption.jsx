@@ -9,7 +9,7 @@ function ImageOption({
         const file = e.target.files && e.target.files[0];
         if (file) {
             const imageUrl = URL.createObjectURL(file);
-            updateComponent(component.id, { src: imageUrl});
+            updateComponent(component.id, { src: imageUrl, file: file});
         }
     };
 

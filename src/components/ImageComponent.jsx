@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import './ImageComponent.css';
 
-function ImageComponent({ id, src, style, updateComponent, setSelectedComponent, contentPageRef }) {
+function ImageComponent({ id, src, file, style, updateComponent, setSelectedComponent, contentPageRef }) {
     const imgRef = useRef(null);
     const type = 'image';
 

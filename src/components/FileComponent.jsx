@@ -1,18 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./FileComponent.css";
 
-function FileComponent({id, src, style, updateComponent, setSelectedComponent, contentPageRef}) {
+function FileComponent({id, src, file, style, updateComponent, setSelectedComponent, contentPageRef}) {
     const fileRef = useRef(null);
     const type = "file";
     const [fileUrl, setFileUrl] = useState('');
 
     useEffect(() => {
-        if (src) {
-            const url = URL.createObjectURL(src);
+        if (file) {
+            const url = URL.createObjectURL(file);
             setFileUrl(url);
             return () => URL.revokeObjectURL(url);
         }
-    }, [src]);
+    }, [file]);
 
     const handleMouseDown = (e) => {
         const fileElement = fileRef.current;
@@ -96,7 +96,7 @@ function FileComponent({id, src, style, updateComponent, setSelectedComponent, c
 
 
     const handleClick = () => {
-        setSelectedComponent({ id, type, src, style });
+        setSelectedComponent({ id, type, file, style });
     };
 
 
@@ -108,9 +108,14 @@ function FileComponent({id, src, style, updateComponent, setSelectedComponent, c
             style={{ ...style }}
             onClick={handleClick}
             onMouseDown={handleMouseDown}
-        >
-            {src ? (
-                <a href={fileUrl} download={src.name} className="file-download-link">
+        >   
+            {file ? (
+                <a href={fileUrl} download={file.name} className="file-download-link">
+                    {file.name} 다운로드
+                </a>
+            )
+            : src ? (
+                <a href={src} download={src} className="file-download-link">
                    {src.name} 다운로드
                 </a>
             ) : (
