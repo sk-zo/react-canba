@@ -13,7 +13,7 @@ function DraggablePage({
     isPageMenuOpen,
     setPageMenuOpen
   }) {
-    const { content, setContent, selectedSession, 
+    const { content, setContent,  
       selectedPage, setSelectedPage, setSelectedComponent } = useContext(AppContext);
     
     const ref = React.useRef(null);
@@ -28,7 +28,7 @@ function DraggablePage({
         if (dragIndex === hoverIndex) {
           return;
         }
-        movePage(dragIndex, hoverIndex);
+        // movePage(dragIndex, hoverIndex);
         item.index = hoverIndex;
       }
     });
@@ -39,6 +39,13 @@ function DraggablePage({
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
+      end: (item, monitor) => {
+        if (monitor.didDrop()) {
+            const dragIndex = item.index;
+            const hoverIndex = index;
+            movePage(dragIndex, hoverIndex);
+        }
+    }
     });
   
     drag(drop(ref));
@@ -119,24 +126,31 @@ function DraggablePage({
     };
     
     const movePage = (fromIndex, toIndex) => {
-      setContent(prevContent => ({
-        ...prevContent,
-        sessions: prevContent.sessions.map((session) => {
-          if (session.id === selectedSession) {
-            const updatedPages = [...session.pages];
-            const movedPage = updatedPages.splice(fromIndex, 1)[0];
-            updatedPages.splice(toIndex, 0, movedPage);
-            updatedPages.forEach((page, index) => {
-              page.order = index;
-            });
-            return {
-              ...session,
-              pages: updatedPages,
-            };
-          }
-          return session;
-        })
-      }));
+      const updatedPages = [...session.pages];
+      const movedPage = updatedPages.splice(fromIndex, 1)[0];
+      updatedPages.splice(toIndex, 0, movedPage);
+      updatedPages.forEach((page, index) => {
+        page.order = index;
+      });
+      
+      const updatedPagesJson = JSON.stringify(updatedPages);
+
+      fetch(`http://localhost:8080/api/reorder-content-page/${content.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: updatedPagesJson,
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("error reorder pages");
+        }
+        return response.json();
+      })
+      .then(data => {
+        setContent(data);
+      })
     };
 
         

@@ -14,8 +14,13 @@ function VideoOption({component, updateComponent}) {
             <input 
                 type="file" 
                 accept="video/*"
+                id={`upload-video-${component.id}`}
                 onChange={handleVideoUpload}
+                style={{ display: 'none' }}
             />
+            <label htmlFor={`upload-video-${component.id}`}>
+                <span style={{ cursor: 'pointer' }}>파일 업로드</span>
+            </label>
         </div>
     );
 }

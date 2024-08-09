@@ -14,8 +14,13 @@ function AudioOption({component, updateComponent}) {
             <input 
                 type="file" 
                 accept="audio/*"
+                id={`upload-audio-${component.id}`}
                 onChange={handleAudioUpload}
+                style={{ display: 'none' }}
             />
+            <label htmlFor={`upload-audio-${component.id}`}>
+                <span style={{ cursor: 'pointer' }}>파일 업로드</span>
+            </label>
         </div>
     )
 }

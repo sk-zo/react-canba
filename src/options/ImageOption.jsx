@@ -19,8 +19,13 @@ function ImageOption({
             <input 
                 type="file" 
                 accept='image/*'
+                id={`upload-image-${component.id}`}
                 onChange={handleImageUpload}
-            />        
+                style={{ display: 'none' }}
+            />
+            <label htmlFor={`upload-image-${component.id}`}>
+                <span style={{ cursor: 'pointer' }}>파일 업로드</span>
+            </label>
         </div>
     );
 }

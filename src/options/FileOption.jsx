@@ -10,7 +10,15 @@ function FileOption({component, updateComponent}) {
     
     return (
         <div>
-            <input type="file" onChange={handleFileUpload}/>
+            <input 
+                type="file" 
+                id={`upload-file-${component.id}`}
+                onChange={handleFileUpload}
+                style={{ display: 'none' }}
+            />
+            <label htmlFor={`upload-file-${component.id}`}>
+                <span style={{ cursor: 'pointer' }}>파일 업로드</span>
+            </label>
         </div>
     );
 }
