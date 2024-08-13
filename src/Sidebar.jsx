@@ -149,14 +149,14 @@ function Sidebar() {
 
   return (
     <div className="sidebar">
-      <div className='thumbnail-box'>
-        <input
+      <input
           id='thumbnail-input' 
           type="file" 
           accept='image/*'
           onChange={handleThumbnailUpload}
           style={{display: 'none'}}
         />
+      <div className='thumbnail-box'>
         <label htmlFor='thumbnail-input' onClick={handleThumbnailUpload}>
           <img className='thumbnail-img' src={`http://localhost:8080/${content.thumbnail}`} alt="" />
         </label>

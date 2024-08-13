@@ -5,9 +5,14 @@
 }
 
 .thumbnail-box {
+    display: flex;
     padding: 5px;
     background-color: white;
     border-radius: 20px;
+}
+
+.thumbnail-box label {
+    width: 100%;
 }
 
 .thumbnail-img {

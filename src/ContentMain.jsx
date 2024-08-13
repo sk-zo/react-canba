@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
+import { motion } from 'framer-motion';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import PageEditMenu from './PageEditMenu';
@@ -175,8 +176,12 @@ function ContentMain() {
 
       <div className='content-main'>
         {selectedPage !== null && page && (
-          <div 
-            className="content-page" 
+          <motion.div 
+            className="content-page"
+            key={selectedPage} 
+            initial={{opacity:0}}
+            animate={{opacity:1}}
+            transition={{duration: 0.8}}
             ref={contentPageRef}
             style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
             >
@@ -189,7 +194,7 @@ function ContentMain() {
                 contentPageRef={contentPageRef}
               />
             ))}
-          </div>
+          </motion.div>
           
         )}
         {page && !selectedComponent && (
