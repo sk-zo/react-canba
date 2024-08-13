@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import './AudioComponent.css';
 
-function AudioComponent({id, src, style, updateComponent,
+function AudioComponent({id, src, file, style, updateComponent,
     setSelectedComponent, contentPageRef}) {
     const audioRef = useRef(null);
     const type = 'audio';

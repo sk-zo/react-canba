@@ -117,7 +117,7 @@ function QnaComponent({
                 <div className="qna-sub-component" key={index}>
                     <div>
                         <textarea 
-                            value={question}
+                            placeholder={question}
                             style={{ fontSize: style.fontSize, color: style.color}}
                             onChange={(e) => handleChange(e, index)}
                         />

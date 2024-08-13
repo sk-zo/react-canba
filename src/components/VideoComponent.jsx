@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import './VideoComponent.css';
 
-function VideoComponent({id, src, style, updateComponent,
+function VideoComponent({id, src, file, style, updateComponent,
     setSelectedComponent, contentPageRef}) {
     const videoRef = useRef(null);
     const type = 'video';

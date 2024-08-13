@@ -12,13 +12,13 @@ function DraggableSession({
     isSessionMenuOpen,
     setSessionMenuOpen
     }) {
-    const { sessions, setSessions, selectedSession, setSelectedSession, 
+    const { content, setContent, selectedSession, setSelectedSession, 
         setSelectedPage, setSelectedComponent} = useContext(AppContext);
     const ref = React.useRef(null);
 
     const handleSetSelectedSession = (sessionId) => {
         setSelectedSession(sessionId);
-        const session = sessions.find((session) => session.id === sessionId);
+        const session = content.sessions.find((session) => session.id === sessionId);
         if (session && session.pages.length > 0) {
           setSelectedPage(session.pages[0].id);
         } else {
@@ -27,58 +27,79 @@ function DraggableSession({
         setSelectedComponent(null);
     };
 
-    const renameSession = (sessionId, sessionName) => {
-        const updatedSessions = sessions.map(session =>
-          session.id === sessionId
-          ? { ...session, name: sessionName}
-          : session
-        );
-        setSessions(updatedSessions);
+    const renameSession = (sessionId, updateSessionName) => {
+        if (updateSessionName.trim()) {
+            const formData = new FormData();
+            formData.append("sessionId", sessionId);
+            formData.append("updateSessionName", updateSessionName);
+
+            fetch('http://localhost:8080/api/rename-content-session', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('response not ok: rename session name');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setContent(data);
+            })
+            .catch(error => {
+                console.error('error rename session name:', error);
+            })
+        }
     };
     
     const copySession = (sessionId) => {
-        const sessionToCopy = sessions.find(session => session.id === sessionId);
-        if (!sessionToCopy) return;
+        const formData = new FormData();
+        formData.append("sessionId", sessionId);
 
-        const copiedPages = sessionToCopy.pages.map(page => ({
-            ...page,
-            id: Date.now() + Math.random(),
-            components: page.components.map(component => ({
-            ...component,
-            id: Date.now() + Math.random(),
-            }))
-        }));
-
-        const copiedSession = {
-            ...sessionToCopy,
-            id: Date.now(),
-            name: `${sessionToCopy.name} (Copy)`,
-            order: sessions.length,
-            pages: copiedPages
-        };
-
-        setSessions([...sessions, copiedSession]);
+        fetch('http://localhost:8080/api/copy-content-session', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("response not ok: copy content session");
+            }
+            return response.json();
+        })
+        .then(data => {
+            setContent(data);
+        })
     };
 
     const deleteSession = (sessionId) => {
-        const updatedSessions = sessions.filter(session => session.id !== sessionId)
-            .map((session, index) => ({
-            ...session,
-            order: index,
-            }));
-        
+        const formData = new FormData();
+        formData.append("sessionId", sessionId);
 
-        setSessions(updatedSessions);
+        fetch('http://localhost:8080/api/delete-content-session', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('response not ok: delte content session');
+            }
+            return response.json();
+        })
+        .then(data => {
+            setContent(data);
+            if (selectedSession === sessionId) {
+                setSelectedSession(null);
+                setSelectedPage(null);
+                setSelectedComponent(null);
+            }
+        })
+        .catch(error => {
+            console.error('error delete content session:', error);
+        })
+    };
 
-        if (selectedSession === sessionId) {
-            setSelectedSession(null);
-            setSelectedPage(null);
-            setSelectedComponent(null);
-        }
-    }
-;
     const moveSession = (fromIndex, toIndex) => {
-        const updatedSessions = [...sessions];
+        const updatedSessions = [...content.sessions];
         const movedSession = updatedSessions.splice(fromIndex, 1)[0];
         updatedSessions.splice(toIndex, 0, movedSession);
 
@@ -86,7 +107,10 @@ function DraggableSession({
             session.order = index;
         });
 
-        setSessions(updatedSessions);
+        setContent(prevContent => ({
+            ...prevContent,
+            sessions: updatedSessions
+        }));
     };
 
     const [, drop] = useDrop({
@@ -178,7 +202,6 @@ function DraggableSession({
     const handleDeleteSessionCancel = () => {
         setIsDeleteSessionMenuOpen(false);
     };
-
 
 
     return (

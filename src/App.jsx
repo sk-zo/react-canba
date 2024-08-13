@@ -4,17 +4,48 @@ import Sidebar from './Sidebar';
 import ContentMain from './ContentMain';
 import { AppContext } from './AppContext';
 import './App.css';
+import { useLocation } from 'react-router-dom';
 
 function App() {
-  const [sessions, setSessions] = useState([]);
+  const location = useLocation();
+  const [content, setContent] = useState(null);
   const [selectedSession, setSelectedSession] = useState(null);
   const [selectedPage, setSelectedPage] = useState(null);
   const [selectedComponent, setSelectedComponent] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const contentId = params.get('id');
+    if (contentId) {
+      fetch(`http://localhost:8080/api/content/${contentId}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("Fetched content:", data);
+          setContent(data);
+          setIsLoading(false);
+        })
+        .catch(error => {
+          console.error('Error fetching content:', error)
+          setIsLoading(false);
+        });
+    }
+  }, [location.search]);
+
+  useEffect(() => {
+    console.log("content updated:", content);
+    
+  }, [content]);
   
 
   useEffect(() => {
     const handleClickNoneContent = (event) => {
-      if (!event.target.closest('.text-component') && !event.target.closest('.component-option')) {
+      if (!event.target.closest('.component-option')) {
         setSelectedComponent(null);
       }
     };
@@ -23,7 +54,7 @@ function App() {
     return () => {
       document.removeEventListener('mousedown', handleClickNoneContent);
     }
-  })
+  }, []);
 
   useEffect(() => {
     console.log('selectedPage updated:', selectedPage);
@@ -35,10 +66,11 @@ function App() {
       <Header/>
       <div className='main-container'>
         <AppContext.Provider value={{
-          sessions, setSessions,
+          content, setContent,
           selectedSession, setSelectedSession,
           selectedPage, setSelectedPage,
           selectedComponent, setSelectedComponent,
+          isLoading
         }}>
           <Sidebar/>
           <ContentMain/>

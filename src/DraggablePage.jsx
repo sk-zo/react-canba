@@ -9,11 +9,11 @@ const ItemType = {
 function DraggablePage({ 
     session,
     page, 
-    index, 
+    index,
     isPageMenuOpen,
     setPageMenuOpen
   }) {
-    const { sessions, setSessions, selectedSession, 
+    const { content, setContent,  
       selectedPage, setSelectedPage, setSelectedComponent } = useContext(AppContext);
     
     const ref = React.useRef(null);
@@ -28,7 +28,7 @@ function DraggablePage({
         if (dragIndex === hoverIndex) {
           return;
         }
-        movePage(dragIndex, hoverIndex);
+        // movePage(dragIndex, hoverIndex);
         item.index = hoverIndex;
       }
     });
@@ -39,6 +39,13 @@ function DraggablePage({
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
+      end: (item, monitor) => {
+        if (monitor.didDrop()) {
+            const dragIndex = item.index;
+            const hoverIndex = index;
+            movePage(dragIndex, hoverIndex);
+        }
+    }
     });
   
     drag(drop(ref));
@@ -48,92 +55,105 @@ function DraggablePage({
     const [isCopyPageMenuOpen, setIsCopyPageMenuOpen] = useState(false);
     const [isDeletePageMenuOpen, setIsDeletePageMenuOpen] = useState(false);
     
-    const renamePage = (sessionId, pageId, pageName) => {
-        const updatedSessions = sessions.map(session =>
-          session.id === sessionId
-          ? {
-            ...session,
-            pages: session.pages.map(page =>
-              page.id === pageId ? { ...page, name: pageName } : page
-            ),
-          }
-          : session
-        );
-        setSessions(updatedSessions);
-      };
-    
-      const copyPage = (sessionId, pageId) => {
-        const sessionToUpdate = sessions.find(session => session.id === sessionId);
-        if (!sessionToUpdate) return ;
-    
-        const pageToCopy = sessionToUpdate.pages.find(page => page.id === pageId);
-    
-        const copiedPage = {
-          ...pageToCopy,
-          id: Date.now() + Math.random(),
-          name: `${pageToCopy.name} (Copy)`,
-          order: sessionToUpdate.pages.length,
-          components: pageToCopy.components.map(component => ({
-            ...component,
-            id: Date.now() + Math.random(),
-          })),
-        };
-    
-        const updatedSessions = sessions.map(session =>
-          session.id === sessionId
-          ? { ...session, pages: [...session.pages, copiedPage]}
-          :session
-        );
-    
-        setSessions(updatedSessions);
-      }
-    
-      const deletePage = (sessionId, pageId) => {
-        const updatedSessions = sessions.map(session =>
-          session.id === sessionId
-          ? {
-            ...session,
-            pages: session.pages.filter(page => page.id !== pageId)
-            .map((page, index) => ({ ...page, order: index })),
-          }
-          : session
-        );
-        setSessions(updatedSessions);
-        console.log("deletePage selectedPage:", selectedPage);
-        console.log("deletePage pageId:", pageId);
-        setSelectedPage(pageId => {
-          if (selectedPage === pageId) {
-            return null;
-          }
-          return selectedPage;
-          });
-          setSelectedComponent(null);
-        
-        console.log("after deletePage selectedPage:", selectedPage);
-      };
-      
-      const movePage = (fromIndex, toIndex) => {
-        const updatedSessions = sessions.map((session) => {
-          if (session.id === selectedSession) {
-            const updatedPages = [...session.pages];
-            const movedPage = updatedPages.splice(fromIndex, 1)[0];
-            updatedPages.splice(toIndex, 0, movedPage);
-    
-            updatedPages.forEach((page, index) => {
-              page.order = index;
-            });
-    
-            return {
-              ...session,
-              pages: updatedPages,
-            };
-          }
-          return session;
-        });
-    
-        setSessions(updatedSessions);
-      };
+    const renamePage = (pageId, updatePageName) => {
+      if (updatePageName.trim()) {
+        const formData = new FormData();
+        formData.append("contentId", content.id);
+        formData.append("pageId", pageId);
+        formData.append("updatePageName", updatePageName);
 
+        fetch('http://localhost:8080/api/rename-content-page', {
+          method: 'POST',
+          body: formData,
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("response not ok: rename content page");
+          }
+          return response.json();
+        })
+        .then(data => {
+          setContent(data);
+        })
+      }
+    };
+    
+    const copyPage = (sessionId, pageId) => {
+      const formData = new FormData();
+      formData.append("sessionId", sessionId);
+      formData.append("pageId", pageId);
+
+      fetch('http://localhost:8080/api/copy-content-page', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("response not ok: copy content page");
+        }
+        return response.json();
+      })
+      .then(data => {
+        setContent(data);
+      })
+    }
+  
+    const deletePage = (pageId) => {
+      const formData = new FormData();
+      formData.append("contentId", content.id);
+      formData.append("pageId", pageId);
+
+      fetch('http://localhost:8080/api/delete-content-page', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('respone not ok: delete page');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setContent(data);
+        if (selectedPage === pageId) {
+          setSelectedPage(null);
+          setSelectedComponent(null);
+        }
+      })
+      .catch(error => {
+        console.error('error delete page:', error);
+      })
+    };
+    
+    const movePage = (fromIndex, toIndex) => {
+      const updatedPages = [...session.pages];
+      const movedPage = updatedPages.splice(fromIndex, 1)[0];
+      updatedPages.splice(toIndex, 0, movedPage);
+      updatedPages.forEach((page, index) => {
+        page.order = index;
+      });
+      
+      const updatedPagesJson = JSON.stringify(updatedPages);
+
+      fetch(`http://localhost:8080/api/reorder-content-page/${content.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: updatedPagesJson,
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("error reorder pages");
+        }
+        return response.json();
+      })
+      .then(data => {
+        setContent(data);
+      })
+    };
+
+        
 
     // page toggle menu
     const handleTogglePageMenu = () => {
@@ -152,7 +172,7 @@ function DraggablePage({
   
     const handleRenamePageConfirm = () => {
       if (renamePageName.trim()) {
-        renamePage(session.id, page.id, renamePageName.trim());
+        renamePage(page.id, renamePageName.trim());
         setIsRenamePageMenuOpen(false);
         setPageMenuOpen(null);
       }
@@ -185,7 +205,7 @@ function DraggablePage({
     }
   
     const handleDeletePageConfirm = () => {
-      deletePage(session.id, page.id);
+      deletePage(page.id);
       setIsDeletePageMenuOpen(false);
       setPageMenuOpen(null);
     }

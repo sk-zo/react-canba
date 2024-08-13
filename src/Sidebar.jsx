@@ -4,18 +4,22 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import DraggableSession from './DraggableSession';
 import './Sidebar.css';
 import { AppContext } from './AppContext';
+import editIcon from './assets/icons/edit-icon.png';
 
 
 function Sidebar() {
   const { 
-    sessions, 
-    setSessions,
+    content,
+    setContent,
     setSelectedSession,
     setSelectedPage,
+    isLoading
   } = useContext(AppContext);
+  const [isContentNamePopupOpen, setIsContentNamePopupOpen] = useState(false);
   const [isSessionPopupOpen, setIsSessionPopupOpen] = useState(false);
   const [addSessionName, setAddSessionName] = useState('');
   const [sessionMenuOpen, setSessionMenuOpen] = useState(null);
+  const [updateContentName, setUpdateContentName] = useState('');
 
 
   useEffect(() => {
@@ -29,18 +33,34 @@ function Sidebar() {
     return () => {
       document.removeEventListener('mousedown', handleClickNoneSessionMenu);
     }
-  })
+  });
+
 
   const addSession = (sessionName) => {
-    const newSession = {
-      id: Date.now(),
-      name: sessionName,
-      order: sessions.length,
-      pages: []
-    };
-    setSessions([...sessions, newSession]);
-    setSelectedSession(newSession.id);
-    setSelectedPage(null);
+    if (sessionName.trim()) {
+      const formData = new FormData();
+      formData.append("contentId", content.id);
+      formData.append("sessionName", sessionName.trim());
+
+      fetch('http://localhost:8080/api/add-content-session', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('response not ok: add content session');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setContent(data);
+        setSelectedSession(data.sessions[data.sessions.length-1].id);
+        setSelectedPage(null);
+      })
+      .catch(error => {
+        console.error('error add content session:', error);
+      })
+    }
   };
 
   const handleAddSession = () => {
@@ -60,23 +80,109 @@ function Sidebar() {
     setIsSessionPopupOpen(false);
   };
 
-  
+  const handleThumbnailUpload = (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('contentId', content.id);
+      formData.append('file', file);
+
+      fetch('http://localhost:8080/api/content/thumbnail-upload', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("response not ok: upload content thumbnail");
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        setContent(data);
+      })
+      .catch(error => {
+        console.error('error upload content thumbanil', error);
+      })
+    }
+  }
+
+  const handleUpdateContentName = () => {
+    setIsContentNamePopupOpen(true);
+  }
+
+  const handleContentNamePopupConfirm = () => {
+    if (updateContentName.trim() && updateContentName !== content.name) {
+      const formData = new FormData();
+      formData.append('contentId', content.id);
+      formData.append('updateContentName', updateContentName.trim());
+
+      fetch('http://localhost:8080/api/update-content-name', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('response not ok:update content name');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setContent(data);
+      })
+      .catch(error => {
+        console.error('Error chagne content name:', error);
+      })
+    }
+    setUpdateContentName('');
+    setIsContentNamePopupOpen(false);
+  }
+
+  const handleContentNamePopupCancel = () => {
+    setUpdateContentName('');
+    setIsContentNamePopupOpen(false);
+  }
+
+  if (isLoading || !content) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div className="sidebar">
+    <div className="sidebar">
+      <input
+          id='thumbnail-input' 
+          type="file" 
+          accept='image/*'
+          onChange={handleThumbnailUpload}
+          style={{display: 'none'}}
+        />
+      <div className='thumbnail-box'>
+        <label htmlFor='thumbnail-input' onClick={handleThumbnailUpload}>
+          <img className='thumbnail-img' src={`http://localhost:8080/${content.thumbnail}`} alt="" />
+        </label>
+      </div>
+      <div className='content-name-box'>
+        <span>{content.name}</span>
+        <img src={editIcon} alt="" onClick={handleUpdateContentName}/>
+      </div>
+      <DndProvider backend={HTML5Backend}>
         <div className='session-box'>
-          <ul className='session-box-ul'>
-            {sessions.map((session, index) => (
-              <DraggableSession
-                key={session.id}
-                session={session}
-                index={index}
-                isSessionMenuOpen={sessionMenuOpen === session.id}
-                setSessionMenuOpen={setSessionMenuOpen}
-              />
-            ))}
-          </ul>
+        {content.sessions.length === 0 ? ( 
+          <p>세션을 등록해주세요</p>
+          ) : (
+            <ul className='session-box-ul'>
+              
+              {content.sessions.map((session, index) => (
+                <DraggableSession
+                  key={session.id}
+                  session={session}
+                  index={index}
+                  isSessionMenuOpen={sessionMenuOpen === session.id}
+                  setSessionMenuOpen={setSessionMenuOpen}
+                />
+              ))}
+            </ul>
+          )}
         </div>
         <button onClick={handleAddSession}>Add Session</button>
         {isSessionPopupOpen && (
@@ -100,8 +206,30 @@ function Sidebar() {
             </div>
           </div>
         )}
-      </div>
-    </DndProvider>
+      </DndProvider>
+      {isContentNamePopupOpen && (
+          <div className='session-popup'>
+            <div className='session-popup-content'>
+              <div className='session-popup-head'>
+                <h3>콘텐츠 이름 변경</h3>
+              </div>
+              <div className='session-popup-body'>
+                <input 
+                  type="text" 
+                  value={updateContentName}
+                  onChange={(e) => setUpdateContentName(e.target.value)}
+                  placeholder={content.name}
+                />
+              </div>
+              <div className='session-popup-tail'>
+                <button onClick={handleContentNamePopupConfirm}>변경</button>
+                <button onClick={handleContentNamePopupCancel}>취소</button>
+              </div>
+            </div>
+          </div>
+        )}
+    </div>
+
   );
 }
 
