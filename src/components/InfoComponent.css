@@ -1,0 +1,37 @@
+.info-component {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    cursor: move;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    resize: none;
+    padding: 10px;
+    user-select: none;
+    min-height: auto;
+}
+  
+.info-component:hover {
+    border: 2px solid #000;
+}
+
+.info-sub-component {
+    flex: 2;
+    margin: 10px 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+}
+
+.info-sub-component.selected {
+    border: 1px solid #0ff;
+    background-color: lightblue;
+}
+
+
+
+
+
