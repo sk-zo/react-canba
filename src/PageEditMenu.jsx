@@ -246,6 +246,30 @@ function PageEditMenu({content}) {
     addComponent(newComponent);
   };
 
+  const addQuizComponent = () => {
+    const newComponent = {
+      id: Date.now(),
+      type: 'quiz',
+      question: '질문을 입력하세요',
+      items: [
+        {text: "보기를 입력하세요.", explanation: "정답입니다.", isCorrect: true, isSelected: false},
+        {text: "보기를 입력하세요.", explanation: "오답입니다.", isCorrect: false, isSelected: false},
+      ],
+      style: {
+        fontSize: '16px',
+        color: '#000000',
+        top: 100,
+        left: 100,
+        width: '400px',
+        height: 'min-content',
+        correctBackgroundColor: '#00ff00',
+        wrongBackgroundColor: '#ff0000'
+      },
+    };
+
+    addComponent(newComponent);
+  }
+
   const addInfoComponent = () => {
     const newComponent = {
       id: Date.now(),
@@ -260,6 +284,7 @@ function PageEditMenu({content}) {
         left: 100,
         width: '400px',
         height: 'min-content',
+        backgroundColor: 'transparent',
       },
     };
 
@@ -278,6 +303,7 @@ function PageEditMenu({content}) {
         left: 100,
         width: '400px',
         height: 'min-content',
+        backgroundColor: 'transparent',
       },
     };
 
@@ -334,6 +360,12 @@ return (
                     onClick={addQnaComponent}
                 >
                     <div><p>질문 답변</p></div>
+                </li>
+                <li 
+                    className='page-edit-body-li'
+                    onClick={addQuizComponent}
+                >
+                    <div><p>퀴즈</p></div>
                 </li>
                 <li 
                     className='page-edit-body-li'
