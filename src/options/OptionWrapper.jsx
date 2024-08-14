@@ -5,6 +5,7 @@ import VideoOption from "./VideoOption";
 import FileOption from "./FileOption";
 import QnaOption from "./QnaOption";
 import VotingOption from "./VotingOption";
+import InfoOption from "./InfoOption";
 
 const optionMap = {
     text: TextOption,
@@ -13,6 +14,7 @@ const optionMap = {
     video: VideoOption,
     file: FileOption,
     qna: QnaOption,
+    info: InfoOption,
     voting: VotingOption
 };
 

@@ -1,13 +1,14 @@
 import React, { useContext, useState } from 'react';
 import './PageEditMenu.css'
 import { AppContext } from './AppContext';
+import Swal from 'sweetalert2';
 
 function PageEditMenu({content}) {
   const { setContent, selectedSession, selectedPage, setSelectedComponent } = useContext(AppContext);
   const [isBackgroundUploadPopupOpen, setBackgroundUploadPoupOpen] = useState(false);
   const [pageBackgroundImage, setPageBackgroundImage] = useState(null);
 
-  const handleSavePageComponents = () => {
+  const savePageComponents = () => {
     const components = content.sessions
         .find(session => session.id === selectedSession)
         .pages
@@ -50,10 +51,34 @@ function PageEditMenu({content}) {
     })
     .then(data => {
         setContent(data);
-        console.log("updated content after save component: ", data);
+        Swal.fire({
+          icon: 'success',
+          title: '저장 완료',
+          text: '페이지가 저장되었습니다.',
+        });
     })
     .catch(error => {
+        Swal.fire({
+          icon: 'error',
+          title: '저장 실패',
+          text: '페이지 저장 중 오류가 발생했습니다.',
+        })
         console.error('error save content component', error);
+    });
+  }
+
+  const handleSavePageComponents = () => {
+    Swal.fire({
+      icon: 'info',
+      title: '페이지 저장',
+      text: '현재 페이지를 저장하시겠습니까?',
+      showCancelButton: true,
+      confirmButtonText: '저장',
+      cancelButtonText: '취소',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        savePageComponents();
+      }
     });
   };
 
@@ -221,6 +246,26 @@ function PageEditMenu({content}) {
     addComponent(newComponent);
   };
 
+  const addInfoComponent = () => {
+    const newComponent = {
+      id: Date.now(),
+      type: 'info',
+      items: [
+        {title: "제목을 입력해주세요.", content: '내용을 입력해주세요', isSelected: false}
+      ],
+      style: {
+        fontSize: '16px',
+        color: '#000000',
+        top: 100,
+        left: 100,
+        width: '400px',
+        height: 'min-content',
+      },
+    };
+
+    addComponent(newComponent);
+  };
+
   const addVotingComponent = () => {
     const newComponent = {
       id: Date.now(),
@@ -289,6 +334,12 @@ return (
                     onClick={addQnaComponent}
                 >
                     <div><p>질문 답변</p></div>
+                </li>
+                <li 
+                    className='page-edit-body-li'
+                    onClick={addInfoComponent}
+                >
+                    <div><p>설명</p></div>
                 </li>
                 <li 
                     className='page-edit-body-li'
