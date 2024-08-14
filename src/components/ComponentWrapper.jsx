@@ -7,6 +7,7 @@ import QnaComponent from './QnaComponent';
 import InfoComponent from './InfoComponent';
 import VotingComponent from './VotingComponent';
 import './common.css';
+import QuizComponent from './QuizComponent';
 
 const componentMap = {
   text: TextComponent,
@@ -15,6 +16,7 @@ const componentMap = {
   video: VideoComponent,
   file: FileComponent,
   qna: QnaComponent,
+  quiz: QuizComponent,
   info: InfoComponent,
   voting: VotingComponent
 };
@@ -45,6 +47,7 @@ function ComponentWrapper({
     video: { src: component.src, file: component.file, style: component.style },
     file: { src: component.src, file: component.file, style: component.style },
     qna: { questions: component.questions, style: component.style },
+    quiz: { question: component.question, items: component.items, style:component.style },
     info: { items: component.items, style: component.style },
     voting: { items: component.items, style: component.style }
   }
