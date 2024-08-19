@@ -3,6 +3,7 @@ import ImageComponent from './ImageComponent';
 import AudioComponent from './AudioComponent';
 import VideoComponent from './VideoComponent';
 import FileComponent from './FileComponent';
+import GradeComponent from './GradeComponent';
 import QnaComponent from './QnaComponent';
 import InfoComponent from './InfoComponent';
 import VotingComponent from './VotingComponent';
@@ -15,6 +16,7 @@ const componentMap = {
   audio: AudioComponent,
   video: VideoComponent,
   file: FileComponent,
+  grade: GradeComponent,
   qna: QnaComponent,
   quiz: QuizComponent,
   info: InfoComponent,
@@ -46,6 +48,7 @@ function ComponentWrapper({
     audio: { src: component.src, file: component.file, style: component.style },
     video: { src: component.src, file: component.file, style: component.style },
     file: { src: component.src, file: component.file, style: component.style },
+    grade: { text: component.text, grade: component.grade, style: component.style },
     qna: { questions: component.questions, style: component.style },
     quiz: { question: component.question, items: component.items, style:component.style },
     info: { items: component.items, style: component.style },

@@ -20,6 +20,7 @@ function PageEditMenu({content}) {
     const componentsWithoutFile = components.map(component => {
       const componentCopy = { ...component};
       delete componentCopy.file;
+      delete componentCopy.grade;
       return componentCopy;
     });
 
@@ -227,6 +228,26 @@ function PageEditMenu({content}) {
     addComponent(newComponent);
   }
 
+  const addGradeComponent = () => {
+    const newComponent = {
+      id: Date.now(),
+      type: 'grade',
+      text: '별점',
+      grade: 0,
+      style: {
+        top: 100,
+        left: 100,
+        fontSize: '16px',
+        width: '200px',
+        height: '100px',
+        starSize: '24px',
+        starColor: 'gold',
+      }
+    };
+
+    addComponent(newComponent);
+  }
+
   const addQnaComponent = () => {
     const newComponent = {
       id: Date.now(),
@@ -354,6 +375,12 @@ return (
                     onClick={addFileComponent}
                 >
                     <div><p>파일</p></div>
+                </li>
+                <li 
+                    className='page-edit-body-li'
+                    onClick={addGradeComponent}
+                >
+                    <div><p>별점</p></div>
                 </li>
                 <li 
                     className='page-edit-body-li'

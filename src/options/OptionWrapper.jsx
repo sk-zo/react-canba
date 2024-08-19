@@ -7,6 +7,7 @@ import QnaOption from "./QnaOption";
 import VotingOption from "./VotingOption";
 import InfoOption from "./InfoOption";
 import QuizOption from "./QuizOption";
+import GradeOption from "./GradeOption";
 
 const optionMap = {
     text: TextOption,
@@ -14,6 +15,7 @@ const optionMap = {
     audio: AudioOption,
     video: VideoOption,
     file: FileOption,
+    grade: GradeOption,
     qna: QnaOption,
     quiz: QuizOption,
     info: InfoOption,
