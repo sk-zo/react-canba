@@ -1,0 +1,29 @@
+.grade-component {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    cursor: move;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    resize: none;
+    padding: 10px;
+    user-select: none;
+    min-height: auto;
+}
+  
+.grade-component:hover {
+    border: 2px solid #000;
+}
+
+.grade-component-box {
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    height: 100%;
+}
+
+
+
+
+
+
