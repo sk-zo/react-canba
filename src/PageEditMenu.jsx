@@ -339,7 +339,7 @@ return (
                 <li className='page-edit-head-li'>
                     <div onClick={handleBackgroundUploaPopup}><p>배경</p></div>
                 </li>
-                <li className='page-edit-head-li'>
+                <li className='page-edit-head-li2'>
                     <div><p onClick={handleSavePageComponents}>저장</p></div>
                 </li>
             </ul>

@@ -21,12 +21,24 @@
 }
 
 .page-edit-head-li {
-    padding: 10px;
+    padding: 0px;
     cursor: pointer;
 }
+.page-edit-head-li2 {
+    padding-top: 0;
+    padding-right: 10px;
+    padding-bottom: 0;
+    padding-left: 80px;
+    
+}
+
 
 .page-edit-body-ul {
+    margin-top: 50px;
     list-style: none;
+}
+.page-edit-body-ul li {
+    margin-bottom: 25px; /* 각 항목 사이에 20px 간격 추가 */
 }
 
 .page-edit-body-li {
