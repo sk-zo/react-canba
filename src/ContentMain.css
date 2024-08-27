@@ -1,9 +1,9 @@
 .content-box {
     flex: 1;
     position: relative;
-    background-color: #ddd;
+    background-color: #f4f4f4;
     border: 1px solid #ddd;
-    height: 100vh;
+    height: calc(100vh - 62px);
     overflow: auto;
   }
 
@@ -13,17 +13,18 @@
 
 .content-main {
   display: flex;
+  width: calc(100% - 260px);
+  padding-top: 30px;
 }
 
 .content-page {
     position: relative;
-    background-color: #fff;
+    background-color: white;
     border: 1px solid #ddd;
     height: 100vh;
     width: 1080px;
     height: 720px;
     margin: auto;
-    margin-top: 100px;
 }
 
 .page-box {
