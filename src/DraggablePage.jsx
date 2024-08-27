@@ -221,6 +221,7 @@ function DraggablePage({
         onClick={() => setSelectedPage(page.id)}
         style={{ opacity: isDragging ? 0.5 : 1 }}
       >
+        
         {page.name}
         <i className='page-menu-icon' onClick={handleTogglePageMenu}>...</i>
         {isPageMenuOpen && (

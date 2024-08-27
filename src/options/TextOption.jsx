@@ -1,4 +1,5 @@
 import React from "react";
+import './input.css'
 
 function TextOption({
     component,
@@ -41,45 +42,53 @@ function TextOption({
     }
 
     return (
-        <div>
-          <div>
-          Font Size:
+        <div className="tpye">
+          <div className="tpyeA">
+          글자 크기 :  &nbsp;
           <input
             type="number"
+            class="inputField"
             value={parseInt(component.style.fontSize)}
             onChange={handleFontSizeChange}
           />
           </div>
-          <div>
-            Color:
+          <div className="tpyeA">
+            글자 색 : &nbsp;
             <input type="color" value={component.style.color} onChange={handleColorChange} />
           </div>
-          <div>
-            Text Align:
+          <div className="tpyeA">
+          글자 위치 :
+          <label style={{ display: 'block' }}>
             <input 
               type="radio" 
               name="text-option-align"
-              value={"left"}
-              checked={component.style.textAlign === "left"}
+              value={"왼쪽 정렬"}
+              checked={component.style.textAlign === "왼쪽 정렬"}
               onChange={handleTextAlignChange}
-            />left
+            />왼쪽 정렬
+          </label>
+          <label style={{ display: 'block' }}>
             <input 
               type="radio" 
               name="text-option-align"
-              value={"center"}
-              checked={component.style.textAlign === "center"}
+              value={"가운데 정렬"}
+              checked={component.style.textAlign === "가운데 정렬"}
               onChange={handleTextAlignChange}
-            />center
+            />가운데 정렬
+          </label>
+          <label style={{ display: 'block' }}>
             <input 
               type="radio" 
               name="text-option-align"
-              value={"right"}
-              checked={component.style.textAlign === "right"}
+              value={"오른쪽 정렬"}
+              checked={component.style.textAlign === "오른쪽 정렬"}
               onChange={handleTextAlignChange}
-            />right
-          </div>
-          <div>
-            font-weight:
+            />오른쪽 정렬
+          </label>
+        </div>
+
+          <div className="tpyeA">
+            글자 굵기 : &nbsp;
             <input 
               type="radio"
               name="text-option-bold" 

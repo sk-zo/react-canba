@@ -168,7 +168,8 @@ function Sidebar() {
       <DndProvider backend={HTML5Backend}>
         <div className='session-box'>
         {content.sessions.length === 0 ? ( 
-          <p>세션을 등록해주세요</p>
+          <p></p>
+
           ) : (
             <ul className='session-box-ul'>
               
@@ -184,7 +185,7 @@ function Sidebar() {
             </ul>
           )}
         </div>
-        <button onClick={handleAddSession}>Add Session</button>
+        <button onClick={handleAddSession} className='session-box-li selected' >세션 추가 +</button>
         {isSessionPopupOpen && (
           <div className='session-popup'>
             <div className='session-popup-content'>

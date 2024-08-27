@@ -156,19 +156,19 @@ function ContentMain() {
                       index={index}
                       isPageMenuOpen={pageMenuOpen === page.id}
                       setPageMenuOpen={setPageMenuOpen}
+                      
                     />
+                    
+                    
                   ))
+                  
               ) : 
               (
-                <li className='page-box-li'>페이지가 등록되지 않았습니다</li>
+                <li></li>
               )}
+              <li className='page-box-li selected' onClick={handleAddPage}>페이지 추가 + </li>
             </ul>
-            <span 
-              className='add-page-button'
-              onClick={handleAddPage}
-            >
-                Add Page
-            </span>
+            
           </div>
         </div>
       </DndProvider>
@@ -194,6 +194,7 @@ function ContentMain() {
                 contentPageRef={contentPageRef}
               />
             ))}
+            
           </motion.div>
           
         )}
