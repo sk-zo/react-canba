@@ -76,6 +76,25 @@
     color: white;  
 }
 
+.session-add-box {
+    background-color: #b0b1b0;
+    color: white;  
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+
+    &:hover {
+        background-color: rgb(131, 129, 129);
+    }
+
+    &:active {
+        background-color: rgb(98, 214, 98); 
+    }
+}
+
+
 .session-menu-icon {
     cursor: pointer;
     margin-left: 8px;
@@ -136,6 +155,8 @@
 .session-popup-body {
     margin: 20px 0;
     padding: 0 20px;
+    width: 300px;
+    height: 50px;
 }
 
 .session-popup-body input {
@@ -148,3 +169,56 @@
     justify-content: space-evenly;
 }
 
+.inputField { 
+    background-color: transparent;
+    height: 40px;
+    width: 145px;
+    border: 2px solid rgba(0, 0, 0, 0.23);
+    border-radius: 7px;
+}
+.inputField~span{
+    background-color: white;
+    position: absolute;
+    top: 23px;
+    left: 17px;
+    z-index: -1;
+    transition: all ease-in-out 0.5s;
+}
+.inputField:hover {
+    border: 2px solid black;
+}
+.inputField:focus-visible  {
+    outline: none!important;
+    border: 2px solid #1976d2;
+}
+.inputField:focus ~ span {
+    top : 12px;
+    z-index: 1;
+    font-size: 5px;
+    transition: all ease-in-out 0.5s;
+}
+
+.Button {
+    display: inline-flex;
+    color: black;
+    font-weight: bold;
+    outline: none;
+    border-radius: 10px;
+    border: 2px solid rgb(201, 200, 200); 
+    background-color: transparent;
+    cursor: pointer;
+
+    line-height: 2.20rem;
+    height: 2.25rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 1rem;
+
+    &:hover {
+        border-color: rgb(89, 199, 89); 
+    }
+
+    &:active {
+        background-color: rgb(98, 214, 98);
+    }
+}
