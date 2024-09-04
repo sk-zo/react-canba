@@ -1,9 +1,15 @@
 .content-box {
     flex: 1;
     position: relative;
+<<<<<<< HEAD
     background-color: #ddd;
     border: 1px solid #ddd;
     height: 100vh;
+=======
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    height: calc(100vh - 62px);
+>>>>>>> parent of 02c6873 (Option-develop v1)
     overflow: auto;
   }
 
@@ -13,17 +19,29 @@
 
 .content-main {
   display: flex;
+<<<<<<< HEAD
+=======
+  width: calc(100% - 260px);
+  padding-top: 30px;
+>>>>>>> parent of 02c6873 (Option-develop v1)
 }
 
 .content-page {
     position: relative;
+<<<<<<< HEAD
     background-color: #fff;
+=======
+    background-color: white;
+>>>>>>> parent of 02c6873 (Option-develop v1)
     border: 1px solid #ddd;
     height: 100vh;
     width: 1080px;
     height: 720px;
     margin: auto;
+<<<<<<< HEAD
     margin-top: 100px;
+=======
+>>>>>>> parent of 02c6873 (Option-develop v1)
 }
 
 .page-box {
@@ -48,7 +66,11 @@
 .page-box-li {
   background-color: #fff;
   border: 1px solid #c2c2c2;
+<<<<<<< HEAD
   min-width: 150px;
+=======
+  min-width: 80px;
+>>>>>>> parent of 02c6873 (Option-develop v1)
   height: 100%;
   padding: 0 15px;
   align-items: center;
@@ -60,6 +82,7 @@
 .page-box-li.selected {
   background-color: #13da44;
   color: white;  
+<<<<<<< HEAD
 
 }
 
@@ -77,6 +100,8 @@
 &:active {
     background-color: rgb(98, 214, 98); 
 }
+=======
+>>>>>>> parent of 02c6873 (Option-develop v1)
 }
 
 .page-menu-icon {
@@ -153,6 +178,7 @@
   display: flex;
   justify-content: space-evenly;
 }
+<<<<<<< HEAD
   
 
 .inputField { 
@@ -208,3 +234,6 @@
       background-color: rgb(98, 214, 98); /* 클릭 시 배경색을 초록색으로 */
   }
 }
+=======
+  
+>>>>>>> parent of 02c6873 (Option-develop v1)
