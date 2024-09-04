@@ -166,7 +166,7 @@ function ContentMain() {
               (
                 <li></li>
               )}
-              <li className='page-box-li selected' onClick={handleAddPage}>페이지 추가 + </li>
+              <li className='page-add-box' onClick={handleAddPage}>페이지 추가 + </li>
             </ul>
             
           </div>
@@ -217,6 +217,7 @@ function ContentMain() {
           </div>
           <div className='page-popup-body'>
             <input 
+              class="inputField"
               type="text"
               value={pageName}
               onChange={(e) => setPageName(e.target.value)}
@@ -224,8 +225,8 @@ function ContentMain() {
             />
           </div>
           <div className='page-popup-tail'>
-            <button onClick={handlePagePopupConfirm}>생성</button>
-            <button onClick={handlePagePopupCancel}>취소</button>
+            <button className='Button' onClick={handlePagePopupConfirm}>생성</button>
+            <button className='Button' onClick={handlePagePopupCancel}>취소</button>
           </div>
         </div>
       </div>

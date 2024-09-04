@@ -43,7 +43,7 @@ function InfoOption({component, updateComponent}) {
     };
 
     const addItem = () => {
-        const updatedItems = [...component.items, {title: '제목을 입력해주세요.', content: '내용을 입력해주세요.', isSelected: false}];
+        const updatedItems = [...component.items, {title: '내용을 입력해주세요.', content: '설명을 입력해주세요.', isSelected: false}];
         updateComponent(component.id, {items: updatedItems, style: {...component.style, height:'min-content'}});
     }
 
@@ -57,43 +57,47 @@ function InfoOption({component, updateComponent}) {
 
 
     return (
-        <div>
-            <div>
-                Font Size:
+        <div className="tpye">
+            <div className="tpyeA">
+            <span className="option-title">글자 크기 : &nbsp;</span>
                 <input 
                     type="number" 
+                    className="inputField-option"
                     value={parseInt(component.style.fontSize)}
                     onChange={handleFontSizeChange}
                 />
             </div>
-            <div>
-                Font Color:
+            <div className="tpyeA">
+            <span className="option-title">글자 색상 : &nbsp;</span>
                 <input 
                     type="color"
                     value={component.style.color}
                     onChange={handleFontColorChange}
                 />
             </div>
-            <div>
-                선택 항목 Color:
+            <div className="tpyeA">
+            <span className="option-title">선택 항목 색상 : &nbsp;</span>
                 <input 
                     type="color"
                     value={component.style.backgroundColor}
                     onChange={handleBackgroundColorChange}
                 />
             </div>
-            <button onClick={addItem}>항목 추가</button>
-            <div>
-            <b>항목 수정</b>
+            <button onClick={addItem}  className="add-Button">항목 추가</button>
+            <button onClick={removeItem} className="remove-Button">항목 제거</button>
+            <div className="tpyeA">
+            <span className="option-title">항목 &nbsp;</span>
                 {component.items.map((item, index) => (
-                    <div style={{marginTop: '5px'}}>
+                    <div style={{marginTop: '10px'}}>
                         <input 
-                            type="text" 
+                            type="text"
+                            className="inputField-info" 
                             placeholder={item.title}
                             onChange={(e) => handleItemTitleChange(e, index)}
                         />
                         <input 
                             type="text" 
+                            className="inputField-info"
                             placeholder={item.content}
                             onChange={(e) => handleItemContentChange(e, index)}
                         />
@@ -101,7 +105,7 @@ function InfoOption({component, updateComponent}) {
                 ))}
             </div>
             
-            <button onClick={removeItem}>항목 제거</button>
+            
 
         </div>
     )

@@ -14,10 +14,10 @@ function InfoComponent({
 
     const handleSelectItem = (index) => {
         const updatedItems = items.map((item, i) =>
-            i === index ? { ...item, isSelected: true } : { ...item, isSelected: false }
+            i === index ? { ...item, isSelected: !item.isSelected } : item
         );
         updateComponent(id, { items: updatedItems });
-    }
+    };
 
     const handleMouseDown = (e) => {
         e.stopPropagation();
@@ -77,10 +77,10 @@ function InfoComponent({
     
           if (direction.includes('right')) {
             newWidth = Math.min(contentPageRect.right - rect.left, Math.max(50, initialWidth + (moveEvent.clientX - initialX)));
-        }
+          }
           if (direction.includes('bottom')) {
             newHeight = Math.min(contentPageRect.bottom - rect.top, Math.max(50, initialHeight + (moveEvent.clientY - initialY)));
-        }
+          }
     
           updateComponent(id, {
             style: {
@@ -102,7 +102,7 @@ function InfoComponent({
 
     const handleClick = () => {
         setSelectedComponent({id, type, items, style});
-    }
+    };
 
     return (
         <div
@@ -135,7 +135,7 @@ function InfoComponent({
                 onMouseDown={(e) => handleResizeMouseDown(e, 'bottom-right')}
             />
         </div>
-    )
+    );
 }
 
 export default InfoComponent;

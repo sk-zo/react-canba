@@ -1,11 +1,11 @@
-.inputField { 
+.inputField-option { 
     background-color: transparent;
     height: 25px;
     width: 80px;
     border: 2px solid rgba(0, 0, 0, 0.23);
     border-radius: 7px;
 }
-.inputField~span{
+.inputField-option~span{
     background-color: white;
     position: absolute;
     top: 23px;
@@ -13,14 +13,14 @@
     z-index: -1;
     transition: all ease-in-out 0.5s;
 }
-.inputField:hover {
+.inputField-option:hover {
     border: 2px solid black;
 }
-.inputField:focus-visible  {
+.inputField-option:focus-visible  {
     outline: none!important;
     border: 2px solid #1976d2;
 }
-.inputField:focus ~ span {
+.inputField-option:focus ~ span {
     top : 12px;
     z-index: 1;
     font-size: 5px;
@@ -29,8 +29,138 @@
 
 .tpyeA{
     margin-bottom: 20px;
+    
 }
 
 .tpye{
     margin-top: 50px;
+}
+
+.option-title{
+    font-weight: bold;
+}
+
+.add-Button {
+    border: solid 2px white;
+    border-radius: 20px;
+    width: 100px;
+    height: 40px;
+    background-color: rgb(164, 248, 168);
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.remove-Button {
+    border: solid 2px white;
+    border-radius: 20px;
+    width: 100px;
+    height: 40px;
+    background-color: rgb(248, 164, 164);
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    
+}
+
+.inputField-quiz { 
+    background-color: transparent;
+    height: 25px;
+    width: 250px;
+    border: 2px solid rgba(0, 0, 0, 0.23);
+    border-radius: 7px;
+    background-color: white;
+}
+
+.inputField-quiz:hover {
+    border: 2px solid black;
+}
+.inputField-quiz:focus-visible  {
+    outline: none!important;
+    border: 2px solid #1976d2;
+}
+
+.quizDiv{
+    display:grid;
+    margin-top: 10px;
+}
+
+.inputField-info { 
+    background-color: transparent;
+    height: 25px;
+    width: 200px;
+    border: 2px solid rgba(0, 0, 0, 0.23);
+    border-radius: 7px;
+    background-color: white;
+    margin-bottom: 5px;
+}
+
+.inputField-info:hover {
+    border: 2px solid black;
+}
+.inputField-info:focus-visible  {
+    outline: none!important;
+    border: 2px solid #1976d2;
+}
+
+.inputField-voting { 
+    background-color: transparent;
+    height: 25px;
+    width: 200px;
+    border: 2px solid rgba(0, 0, 0, 0.23);
+    border-radius: 7px;
+    background-color: white;
+    margin-bottom: 5px;
+}
+
+.inputField-voting:hover {
+    border: 2px solid black;
+}
+.inputField-voting:focus-visible  {
+    outline: none!important;
+    border: 2px solid #1976d2;
+}
+
+.Quiz-option-text-color{
+    display: flex;
+    margin-bottom: 50px;
+}
+
+.Quiz-option-choice{
+    border-left: 2px solid rgb(224, 224, 224);
+    margin-left: 50px;
+    padding-left: 35px;
+}
+
+.Quiz-option-textarea-title{
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.Quiz-option-choice-title{
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+
+}
+
+.item-correct-label {
+    display: inline-block;
+    padding: 5px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    margin-left: 10px;
+}
+
+.item-correct-label.correct {
+    border-color: green;
+    color: green;
+}
+
+.item-correct-label.incorrect {
+    border-color: red;
+    color: red;
 }

@@ -118,12 +118,14 @@ function QnaComponent({
                     <div>
                         <textarea 
                             placeholder={question}
+                            className="question-textarea"
                             style={{ fontSize: style.fontSize, color: style.color}}
                             onChange={(e) => handleChange(e, index)}
                         />
                     </div>
                     <div>
                         <textarea 
+                            className="answer-textarea"
                             placeholder="답변을 입력해주세요."
                         />
                     </div>
@@ -131,7 +133,7 @@ function QnaComponent({
             ))}
             
             <div className="qna-submit">
-                <button>제출하기</button>
+                <button className="submit-Button">제출하기</button>
             </div>
             <div
                 className="resize-handle bottom-right"

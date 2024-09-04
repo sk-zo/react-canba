@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState, useRef, useEffect } from 'react';
 import "./QuizComponent.css";
 
 function QuizComponent({
@@ -15,14 +15,17 @@ function QuizComponent({
 
     const handleQuizQuestionChange = (e) => {
         updateComponent(id, { question: e.target.value });
-    }
+        setValue(e.target.value);
+    };
 
     const handleSelectItem = (index) => {
-        const updateditems = items.map((item, i) =>
-            i === index ? { ...item, isSelected: true } : { ...item, isSelected: false}
+        const updatedItems = items.map((item, i) => 
+            i === index 
+                ? { ...item, isSelected: true } 
+                : { ...item, isSelected: false } 
         );
-        updateComponent(id, { items: updateditems });
-    }
+        updateComponent(id, { items: updatedItems });
+    };
 
     const handleMouseDown = (e) => {
         e.stopPropagation();
@@ -83,10 +86,10 @@ function QuizComponent({
     
           if (direction.includes('right')) {
             newWidth = Math.min(contentPageRect.right - rect.left, Math.max(50, initialWidth + (moveEvent.clientX - initialX)));
-        }
+          }
           if (direction.includes('bottom')) {
             newHeight = Math.min(contentPageRect.bottom - rect.top, Math.max(50, initialHeight + (moveEvent.clientY - initialY)));
-        }
+          }
     
           updateComponent(id, {
             style: {
@@ -108,7 +111,24 @@ function QuizComponent({
 
       const handleClick = () => {
         setSelectedComponent({id, type, question, items, style});
-      }
+      };
+
+
+      const [value, setValue] = useState("");
+
+      const textareaRef = useRef(null);
+    
+      useEffect(() => {
+          const textarea = textareaRef.current;
+          const quiz = quizRef.current;
+          if (textarea) {
+              textarea.style.height = 'auto';
+              textarea.style.height = `${textarea.scrollHeight}px`; 
+          }
+          quiz.style.height = 'auto';
+          quiz.style.height = `${textarea.scrollHeight} + 5px`;
+      }, [value]);
+
 
       return (
         <div
@@ -120,23 +140,42 @@ function QuizComponent({
         >
             <textarea
                 placeholder={question}
+                className='custom-textarea'
+                ref={textareaRef}
+                value={value}
                 onChange={handleQuizQuestionChange}
-                style={{fontSize: style.fontSize, color: style.color}}
+                style={{fontSize: style.textareaFontSize, color: style.textareaColor}}
             />
             {items.map((item, index) => (
                 <div
                     key={index}
                     className="quiz-sub-component"
                     style={{
-                        backgroundColor: item.isSelected ? item.isCorrect ? style.correctBackgroundColor : style.wrongBackgroundColor : 'transparent'
+                        backgroundColor: item.isSelected ? (item.isCorrect ? style.correctBackgroundColor : style.wrongBackgroundColor) : 'transparent',
+                        position: 'relative'
                     }}
                     onClick={() => handleSelectItem(index)}
                 >
                     <span style={{fontSize: style.fontSize, color: style.color}}>{item.text}</span>
                     {item.isSelected && (
-                    <div>
-                        <span style={{fontSize: style.fontSize, color: style.color}}>{item.explanation}</span>
-                    </div>
+                        <div
+                            className="feedback"
+                            style={{
+                                position: 'absolute',
+                                paddingTop : "16px",
+                                zIndex : "100",
+                                top: '50%', 
+                                left: 0,
+                                right: 0,
+                                padding: '-1px',
+                                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                                textAlign: 'center',
+                                color: item.isCorrect ? 'green' : 'gray',
+                                fontSize: style.fontSize
+                            }}
+                        >
+                            {item.isCorrect ? "정답입니다" : "오답입니다"}
+                        </div>
                     )}
                 </div>
             ))}
@@ -145,7 +184,7 @@ function QuizComponent({
                 onMouseDown={(e) => handleResizeMouseDown(e, 'bottom-right')}
             />
         </div>
-      )
+      );
 }
 
 export default QuizComponent;

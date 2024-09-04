@@ -54,3 +54,52 @@
     outline: none;
     box-sizing: border-box;
 }
+
+.question-textarea {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    resize: none; 
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden; 
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    border: solid 2px rgb(218, 218, 218);
+}
+
+.question-textarea:focus {
+    border-color: #2ecc71;
+    outline: none; 
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+}
+
+.answer-textarea {
+    width: 100%;
+    padding: 5px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    resize: none; 
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden; 
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.answer-textarea:focus {
+    border-color: #2ecc71;
+    outline: none; 
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+}
+
+.submit-Button{
+    border: none;
+    height: 30px;
+    font-weight: bold;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}

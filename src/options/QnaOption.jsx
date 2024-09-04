@@ -36,21 +36,22 @@ function QnaOption({
     }
 
     return (
-        <div>
-          <div>
-          Font Size:
+      <div className="tpye">
+          <div className="tpyeA">
+          <span className="option-title">글자 크기 : &nbsp;</span>
           <input
             type="number"
+            className="inputField-option"
             value={parseInt(component.style.fontSize)}
             onChange={handleFontSizeChange}
           />
           </div>
-          <div>
-            Color:
+          <div className="tpyeA">
+          <span className="option-title">글자 색상 : &nbsp;</span>
             <input type="color" value={component.style.color} onChange={handleColorChange} />
           </div>
-          <button onClick={addQuestion}>문항 추가</button>
-          <button onClick={removeQuestion}>문항 제거</button>
+          <button onClick={addQuestion} className="add-Button">문항 추가 + </button>
+          <button onClick={removeQuestion} className="remove-Button">문항 제거 - </button>
 
         </div>
     );

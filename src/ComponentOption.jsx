@@ -90,14 +90,14 @@ function ComponentOption({
 
   return (
     <div className="component-option">
-      <h3>Component Options</h3>
+      <h3 style={{textAlign : "center" , marginTop : "40px"}}>설정</h3>
       <OptionWrapper
         component={component}
         updateComponent={updateComponent}
       />
       
       <div>
-        <button onClick={handleDeleteComponent}>Delete</button>
+        <button onClick={handleDeleteComponent} className='delete-Button'>삭제</button>
       </div>
       {isDeleteExistComponentPopupOpen && (
         <div className='component-popup'>
