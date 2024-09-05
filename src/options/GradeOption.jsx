@@ -1,4 +1,5 @@
 import React from "react";
+import './input.css';
 
 function GradeOption({component, updateComponent}) {
     const handleFontSizeChange = (e) => {
@@ -38,33 +39,35 @@ function GradeOption({component, updateComponent}) {
     };
 
     return (
-        <div>
-            <div>
-                Font Size:
+        <div className="tpye">
+            <div className="tpyeA">
+                <span className="option-title">글자 크기 : &nbsp;</span>
                 <input 
                     type="number" 
+                    className="inputField-option"
                     value={parseInt(component.style.fontSize)}
                     onChange={handleFontSizeChange}
                 />
             </div>
-            <div>
-                Font Color:
+            <div className="tpyeA">
+                <span className="option-title">글자 색상 : &nbsp;</span>
                 <input 
                     type="color"
                     value={component.style.color}
                     onChange={handleFontColorChange}
                 />
             </div>
-            <div>
-                Star Size:
+            <div className="tpyeA">
+                <span className="option-title">별 크기 : &nbsp;</span>
                 <input 
                     type="number" 
+                    className="inputField-option"
                     value={parseInt(component.style.starSize)}
                     onChange={handleStarSizeChange}
                 />
             </div>
-            <div>
-                Star Color:
+            <div className="tpyeA">
+                <span className="option-title">별 색상 : &nbsp;</span>
                 <input 
                     type="color"
                     value={component.style.starColor}

@@ -185,11 +185,9 @@ function Sidebar() {
             </ul>
           )}
         </div>
-<<<<<<< HEAD
+
         <button onClick={handleAddSession} className='session-add-box' >세션 추가 +</button>
-=======
-        <button onClick={handleAddSession} className='session-box-li selected' >세션 추가 +</button>
->>>>>>> parent of 02c6873 (Option-develop v1)
+
         {isSessionPopupOpen && (
           <div className='session-popup'>
             <div className='session-popup-content'>

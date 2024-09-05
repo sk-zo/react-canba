@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState, useRef, useEffect } from 'react';
 import "./GradeComponent.css";
 
 function GradeComponent({
@@ -15,6 +15,7 @@ function GradeComponent({
 
     const handleTextChange = (e) => {
         updateComponent(id, { text: e.target.value });
+        setValue(e.target.value);
     }
 
     const handleGradeChange = (i) => {
@@ -108,6 +109,29 @@ function GradeComponent({
       }
 
 
+      const [value, setValue] = useState(text);
+
+      const textareaRef = useRef(null);
+      useEffect(() => {
+        setValue(text);
+    }, [text]);
+    
+      useEffect(() => {
+          const textarea = textareaRef.current;
+          const grade = gradeRef.current;
+          if (textarea) {
+              textarea.style.height = 'auto';
+              textarea.style.height = `${textarea.scrollHeight}px`; 
+          }
+          grade.style.height = 'auto';
+          grade.style.height = `${textarea.scrollHeight} + 5px`;
+
+
+      }, [value, text]);
+
+    
+      
+
     return (
       <div
         ref={gradeRef}
@@ -117,6 +141,8 @@ function GradeComponent({
         onClick={handleClick}
       >
         <textarea
+            className='grade-textarea'
+            ref={textareaRef}
             value={text}
             onChange={handleTextChange}
             style={{fontSize: style.fontSize, color: style.color}}

@@ -1,16 +1,14 @@
 .page-edit-menu {
-<<<<<<< HEAD
-    width: 240px;
-=======
+
+
     position: absolute;
     width: 240px;
     height: calc(100vh - 82px);
->>>>>>> parent of 02c6873 (Option-develop v1)
     background-color: #f4f4f4;
     padding: 10px;
     right: 0;
     top: 0;
-    height: 100vh;
+
 }
 
 .page-edit-head {

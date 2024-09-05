@@ -50,46 +50,53 @@ function VotingOption({component, updateComponent}) {
 
 
     return (
-        <div>
-            <div>
-                Font Size:
+        <div className="tpye">
+            <div className="tpyeA">
+                글자 크기 : &nbsp;
                 <input 
                     type="number" 
+                    className="inputField-option"
                     value={parseInt(component.style.fontSize)}
                     onChange={handleFontSizeChange}
                 />
             </div>
-            <div>
-                Font Color:
+            <div className="tpyeA">
+                글자 색상 : &nbsp;
                 <input 
                     type="color"
                     value={component.style.color}
                     onChange={handleFontColorChange}
                 />
             </div>
-            <div>
-                선택 항목 Color:
+            <div className="tpyeA">
+                선택 항목 색상 : &nbsp;
                 <input 
                     type="color"
                     value={component.style.backgroundColor}
                     onChange={handleBackgroundColorChange}
                 />
             </div>
-            <button onClick={addItem}>항목 추가</button>
-            <div>
+            
+            <button onClick={addItem} className="add-Button">항목 추가 + </button>
+            <button onClick={removeItem} className="remove-Button">항목 제거 - </button>
+            <div className="tpyeA">
             <b>항목 수정</b>
+            <div style={{ marginTop: '20px' }}>
+
+
                 {component.items.map((item, index) => (
-                    <div>
+                    <div style={{ marginTop: '5px' }}>
                         <input 
                             type="text" 
                             placeholder={item.content}
+                            className="inputField-voting"
                             onChange={(e) => handleItemContentChange(e, index)}
                         />
                     </div>
                 ))}
             </div>
+            </div>
             
-            <button onClick={removeItem}>항목 제거</button>
 
         </div>
     )

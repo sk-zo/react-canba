@@ -5,25 +5,38 @@
     cursor: move;
     box-sizing: border-box;
     border: 2px solid transparent;
-    resize: none;
     padding: 10px;
     user-select: none;
     min-height: auto;
 }
-  
+
 .grade-component:hover {
     border: 2px solid #000;
 }
 
 .grade-component-box {
+    margin-top: 20px;
     display: flex;
     align-items: center; 
     justify-content: center;
     height: 100%;
 }
 
+.grade-textarea {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    resize: none; 
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden; 
+    box-sizing: border-box;
+}
 
-
-
-
-
+.grade-textarea:focus {
+    border-color: #2ecc71;
+    outline: none; 
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+}
