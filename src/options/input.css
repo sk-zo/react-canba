@@ -34,10 +34,12 @@
 
 .tpye{
     margin-top: 50px;
+
 }
 
 .option-title{
     font-weight: bold;
+
 }
 
 .add-Button {
@@ -163,4 +165,5 @@
 .item-correct-label.incorrect {
     border-color: red;
     color: red;
+
 }

@@ -1,6 +1,8 @@
 .component-option {
+
+
     position: absolute;
-    width: 450px;
+    width: 240px;
     height: calc(100vh - 82px);
     background-color: #f4f4f4;
     padding: 10px;

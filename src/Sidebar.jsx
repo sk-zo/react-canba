@@ -185,7 +185,9 @@ function Sidebar() {
             </ul>
           )}
         </div>
-        <button onClick={handleAddSession} className='session-add-box'>세션 추가 +</button>
+
+        <button onClick={handleAddSession} className='session-add-box' >세션 추가 +</button>
+
         {isSessionPopupOpen && (
           <div className='session-popup'>
             <div className='session-popup-content'>
@@ -194,7 +196,6 @@ function Sidebar() {
               </div>
               <div className='session-popup-body'>
                 <input 
-                  class="inputField"
                   type="text" 
                   value={addSessionName}
                   onChange={(e) => setAddSessionName(e.target.value)}
@@ -202,8 +203,8 @@ function Sidebar() {
                 />
               </div>
               <div className='session-popup-tail'>
-                <button className='Button' onClick={handleSessionPopupConfirm}>생성</button>
-                <button className='Button' onClick={handleSessionPopupCancel}>취소</button>
+                <button onClick={handleSessionPopupConfirm}>생성</button>
+                <button onClick={handleSessionPopupCancel}>취소</button>
               </div>
             </div>
           </div>
@@ -217,7 +218,6 @@ function Sidebar() {
               </div>
               <div className='session-popup-body'>
                 <input 
-                  class="inputField"
                   type="text" 
                   value={updateContentName}
                   onChange={(e) => setUpdateContentName(e.target.value)}
@@ -225,8 +225,8 @@ function Sidebar() {
                 />
               </div>
               <div className='session-popup-tail'>
-                <button className='Button' onClick={handleContentNamePopupConfirm}>변경</button>
-                <button className='Button' onClick={handleContentNamePopupCancel}>취소</button>
+                <button onClick={handleContentNamePopupConfirm}>변경</button>
+                <button onClick={handleContentNamePopupCancel}>취소</button>
               </div>
             </div>
           </div>

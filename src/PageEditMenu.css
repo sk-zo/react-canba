@@ -1,12 +1,14 @@
 .page-edit-menu {
+
+
     position: absolute;
-    width: 400px;
+    width: 240px;
     height: calc(100vh - 82px);
     background-color: #f4f4f4;
     padding: 10px;
     right: 0;
     top: 0;
-    border-left: 1px solid #ddd;
+
 }
 
 .page-edit-head {
@@ -40,7 +42,7 @@
     list-style: none;
 }
 .page-edit-body-ul li {
-    margin-bottom: 25px; /* 각 항목 사이에 20px 간격 추가 */
+    margin-bottom: 25px; 
 }
 
 .page-edit-body-li {
