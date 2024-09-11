@@ -17,7 +17,7 @@
 .content-main {
   display: flex;
 
-  width: calc(100% - 260px);
+  width: calc(100% - 450px);
   padding-top: 30px;
 
 }
@@ -32,7 +32,7 @@
     width: 1080px;
     height: 720px;
     margin: auto;
-    margin-top: 100px;
+
 
 }
 

@@ -88,7 +88,7 @@ function InfoOption({component, updateComponent}) {
             <div className="tpyeA">
             <span className="option-title">항목 &nbsp;</span>
                 {component.items.map((item, index) => (
-                    <div style={{marginTop: '10px'}}>
+                    <div style={{marginTop: '10px', display : "grid"}}>
                         <input 
                             type="text"
                             className="inputField-info" 
